@@ -6,6 +6,12 @@ let langle;
 function setup() {
   cnv = createCanvas(800, 800);
   angle = PI/3;
+  input = createInput();
+  input.position(20, 65);
+
+  button = createButton('save');
+  button.position(input.x + input.width + 10, 65);
+  button.mousePressed(saveDrawing);
   stslider = createSlider(50,500, 100, 1);
   rslider = createSlider(0,TWO_PI, PI/6, 0.01);
   lslider = createSlider(0, TWO_PI, PI/6, 0.01);
@@ -22,11 +28,20 @@ function draw() {
   branch(stslider.value());
 }
 
+function saveDrawing() {
+  console.log(input.value().length);
+  if(input.value().length != 0) {
+    save(input.value() + ".png");
+  } else {
+    alert("Save Filename empty.");
+  }
+}
+
 function branch(len) {
-  line(0,0,0,-len);
-  translate(0,-len);
   stroke(600/len,400/len,500/len);
   strokeWeight(len/10);
+  line(0,0,0,-len);
+  translate(0,-len);
   if(len > lenSlider.value()) {
     push();
     rotate(rangle);
