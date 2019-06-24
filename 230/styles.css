@@ -1,0 +1,90 @@
+﻿body
+{
+	background-color: #FF9900;
+	font-family: Arial;
+}
+
+h1
+{
+	font-size: 2em;
+	font-weight: bold;
+	text-align: center;
+}
+
+h2
+{
+	font-size: 1.5em;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+h3
+{
+	font-size: 1.4em;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+a
+{
+	font-family: Arial;
+	text-decoration: none;
+	font-weight: bold;
+	color: #005D99;
+}
+
+a:visited, a:active
+{
+	color:#B22D00;
+}
+
+a:hover
+{
+	color: #0074FF;
+	text-decoration: underline;
+}
+
+#mypicture
+{
+	width: 280px;
+    	border: 5px solid gray;
+    	margin: 0px;
+	float: right;
+}
+
+figcaption
+{
+	font-size: .8em;
+	font-style: italic;
+}
+
+table
+{
+	border: 2px solid gray;
+	padding: 4px;
+}
+
+td
+{
+	border: 1px solid gray;
+	font-weight: bold;
+}
+
+th
+{
+	border: 1px solid gray;
+	background: gray
+}
+
+#subhead
+{
+	color: #F2F2F2;
+	text-align: center;
+	background: purple;
+	font-weight: bold;
+}
+
+#header
+{
+	color:#0001FF;
+}

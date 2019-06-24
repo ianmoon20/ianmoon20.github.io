@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>XHR CSV Example</title>
+    <style>
+        body {
+            background-color: navajowhite;
+            font-family: tahoma, verdana, sans-serif;
+        }
+        
+        #content-container {
+            width: 60%;
+            margin-left: 20%;
+            background-color: azure;
+            padding-top: 2%;
+            border-style: solid;
+            border-width: 1%;
+            border-color: black;
+            box-shadow: 7px 5px 5px gray;
+        }
+        
+        #storySelector {
+            width: 50%;
+            margin-left: 25%;
+        }
+        
+        #content {
+            width: 70%;
+            margin-left: 15%;
+            padding-bottom: 5%;
+        }
+        
+        h2 {
+            text-align: center;
+        }
+
+    </style>
+    <script>
+        (function() {
+            window.onload = init;
+
+            function init() {
+                var storySelector = document.querySelector('#storySelector');
+                storySelector.onchange = function(e) {
+                    loadData(e.target.value);
+                };
+                
+                loadData(storySelector.options[storySelector.selectedIndex].value);
+            }
+
+            function loadData(url) {
+                var xhr = new XMLHttpRequest();
+
+                xhr.onload = function() {
+                    var content = document.querySelector('#content');
+                    var response = xhr.responseText;
+                    if(url == "jaberwocky.txt")
+                        {
+                            content.style.textAlign = "center";
+                        }
+                    else
+                        {
+                            content.style.textAlign = "left";
+                        }
+                    content.innerHTML = response;
+                }
+
+                xhr.open('GET', url, true);
+                // try to prevent browser caching by sending a header to the server
+                xhr.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2010 00:00:00 GMT");
+                xhr.send();
+            }
+
+        }())
+
+    </script>
+</head>
+
+<body>
+    <div id="content-container">
+        <select id='storySelector'>
+            <option value="jaberwocky.txt">Jaberwocky</option>
+            <option value="hello.txt">Hello World!</option>
+            <option value="random-story.txt">Random Story</option>
+        </select>
+        <div id='content'></div>
+    </div>
+</body>
+
+</html>

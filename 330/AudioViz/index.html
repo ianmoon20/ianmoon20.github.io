@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Ian Moon - Audio Visualizer</title>
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,400i" rel="stylesheet">
+    <style>
+        html,
+        body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        body {
+            background: #eeeeee;
+            font-family: tahoma, verdana, sans serif;
+            font-size: 15px;
+        }
+        
+        canvas {
+            background: black;
+        }
+        
+        #controls {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 2;
+            top: 0;
+            left: 0;
+            padding-top: 0px;
+            background-color: rgba(100, 100, 100, 0.4);
+            color: white;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            transition: 0.25s;
+        }
+        
+        #audio-wrapper {
+            position: absolute;
+            width: 30%;
+            margin-left: 35%;
+            background-color: aqua;
+        }
+        
+        #closeButton {
+            position: absolute;
+            float: none;
+            top: 0px;
+            right: 15px;
+            margin-left: 50px;
+            font-size: 24px;
+            color: white;
+        }
+        
+        #title {
+            width: inherit;
+            margin-top: 5px;
+            padding-bottom: 2px;
+            margin-bottom: 0px;
+        }
+        
+        .openBtn {
+            font-size: 30px;
+            cursor: pointer;
+            color: white;
+            transition-duration: .2s;
+        }
+        
+        .openBtn:hover {
+            font-size: 28px;
+            color: lightgray;
+        }
+        
+        #overlay {
+            position: absolute;
+            width: auto;
+            top: 4%;
+            z-index: 1;
+        }
+        
+        #achievement-container {
+            position: absolute;
+            height: 60%;
+            width: 100%;
+            top: 40%;
+            font-size: 5vw;
+        }
+        
+        #achievement {
+            color: white;
+            text-align: center;
+            animation: fadeout 10s;
+            opacity: 0;
+        }
+        
+        @keyframes fadeout {
+            0% {
+                opacity: 0;
+            }
+            
+            40% {
+                opacity: 1;
+            }
+            
+            100% {
+                opacity: 0;
+            }
+        }
+        
+        .section-title {
+            height: 10%;
+            width: 99%;
+            padding-top: 3px;
+            border-style: solid;
+            border-width: 1px;
+            border-color: aqua;
+            text-align: center;
+            background-color: black;
+            color: aqua;
+        }
+        
+        .section-title:hover {
+            background-color: aqua;
+            border-color: black;
+            color: black;
+        }
+        
+        #name-container {
+            height: 10%;
+            font-family: 'Merriweather', serif;
+            background-color: black;
+            border-style: solid;
+            border-width: 1px;
+            border-color: aqua;
+        }
+        
+        #heading {
+            margin-left: 10px;
+        }
+        
+        .content-container {
+            height: 0%;
+            width: 97%;
+            margin-left: 1%;
+            padding-top: 3px;
+            border-width: 3px;
+            border-style: solid;
+            border-top: 0px;
+            border-color: dimgray;
+            overflow-y: auto;
+            background-color: lightgray;
+            color: black;
+            transition: .5s;
+        }
+        
+        #filters {
+            display: table-cell;
+        }
+        
+        #songName:hover {
+            background-color: rgba(0, 255, 255, .2);
+            text-decoration-color: aqua;
+        }
+        
+        .section-content {
+            height: 100%;
+            margin-left: 5px;
+        }
+        
+        #uploader {
+            padding: 0;
+            border: 0px;
+            border-bottom: 2px;
+            border-style: solid;
+            border-color: gray;
+        }
+        
+        @media only screen and (min-width: 320px) and (max-width: 560px) {
+            body {
+                -webkit-text-size-adjust: none;
+            }
+        }
+
+    </style>
+    <script>
+        //TO DO:
+        //Add a control sidemenu
+        //https://www.w3schools.com/howto/howto_js_sidenav.asp
+
+        // An IIFE ("Iffy") - see the notes in mycourses
+        (function() {
+            "use strict";
+
+            var NUM_SAMPLES = 256;
+            var sounds = [
+                'media/CloZee - Koto.mp3',
+                'media/Panda Eyes - Colorblind.mp3',
+                'media/Coyote Kisses - Six Shooter.mp3'
+            ];
+
+            var soundsName = [
+                'Koto',
+                'Colorblind',
+                'Six Shooter'
+            ];
+
+            var codes = [
+                "U.S.S Enterprise",
+                "You blockhead!",
+                "Adventure!",
+                "Even further beyond",
+                "I'm just a kid..."
+            ];
+
+            var audioElement;
+            var delayAmount = 0.0;
+            var speed = 1;
+            var delayNode;
+            var analyserNode;
+            var canvas, ctx, winWidth, winHeight;
+            var red = 200,
+                green = 31,
+                blue = 237;
+            var waveform = false;
+            var colorMode = "color";
+
+            //How many times the data will wrap around the circle (1 = 1/2 circle)
+            var wrapAmount = 2;
+
+            var invert = false,
+                tintRed = false,
+                noise = false,
+                lines = false,
+                gray = false;
+            var maxRadius = 100;
+            var volume = .5;
+            var currSong = 0;
+            var brightness = 0;
+            var controlsOpen = false;
+            var achievementUnlocked = false;
+
+            function init() {
+                winHeight = window.innerHeight;
+                winWidth = window.innerWidth;
+
+                // set up canvas stuff
+                canvas = document.querySelector('canvas');
+                ctx = canvas.getContext("2d");
+
+                // get reference to <audio> element on page
+                audioElement = document.querySelector('audio');
+                audioElement.volume = volume;
+
+                // get sound track <select> and Full Screen button working
+                setupUI();
+
+                // load and play default sound into audio element
+                playStream(audioElement, sounds[currSong], soundsName[currSong]);
+
+                resize();
+
+                // start animation loop
+                update();
+            }
+
+
+
+            function createWebAudioContextWithAnalyserNode(audioElement) {
+                var audioCtx, analyserNode, sourceNode;
+                // create new AudioContext
+                // The || is because WebAudio has not been standardized across browsers yet
+                // http://webaudio.github.io/web-audio-api/#the-audiocontext-interface
+                audioCtx = new(window.AudioContext || window.webkitAudioContext);
+                
+                // create an analyser node
+                analyserNode = audioCtx.createAnalyser();
+
+                /*
+                We will request NUM_SAMPLES number of samples or "bins" spaced equally 
+                across the sound spectrum.
+			
+                If NUM_SAMPLES (fftSize) is 256, then the first bin is 0 Hz, the second is 172 Hz, 
+                the third is 344Hz. Each bin contains a number between 0-170 representing 
+                the amplitude of that frequency.
+                */
+
+                // fft stands for Fast Fourier Transform
+                analyserNode.fftSize = NUM_SAMPLES;
+
+                delayNode = audioCtx.createDelay();
+                delayNode.delayTime.value = delayAmount;
+
+                // this is where we hook up the <audio> element to the analyserNode
+                sourceNode = audioCtx.createMediaElementSource(audioElement);
+                //sourceNode.connect(analyserNode);
+
+                sourceNode.connect(audioCtx.destination);
+
+                sourceNode.connect(delayNode);
+                delayNode.connect(analyserNode);
+
+                // here we connect to the destination i.e. speakers
+                analyserNode.connect(audioCtx.destination);
+                return analyserNode;
+            }
+
+            function setupUI() {
+                //Setting up controls tab manager
+                var titles = document.getElementsByClassName("section-title");
+                var content = document.getElementsByClassName("content-container");
+                for (var i = 0; i < content.length; i++) {
+                    var currTitle = titles[i];
+                    var createClickHandler = function(content, titleIndex) {
+                        return function() {
+                            manageTabs(content, titleIndex);
+                        }
+                    }
+
+                    currTitle.onclick = createClickHandler(content, i);
+                }
+
+                //Setting input handlers to change the color for filling and stroking
+                var colorSliders = document.getElementsByClassName("color-slider");
+                for (var i = 0; i < colorSliders.length; i++) {
+                    var currSlider = colorSliders[i];
+                    var createInputHandler = function(slider) {
+                        return function() {
+                            manageColors(slider);
+                        }
+                    }
+
+                    currSlider.oninput = createInputHandler(currSlider);
+                }
+
+                //Creating the song list
+                createSongList();
+
+                //Not using this due to utilizing resizeCanvas
+                /*document.querySelector("#fsButton").onclick = function() {
+                    requestFullscreen(canvas);
+                };*/
+
+                document.querySelector("#waveformBox").onchange = function(e) {
+                    waveform = e.target.checked;
+                };
+
+                document.querySelector("#colorModeSelect").onchange = function(e) {
+                    colorMode = e.target.value;
+                };
+
+                document.querySelector("#submitButton").onclick = function(e) {
+                    var textbox = document.getElementById("codeBox");
+
+                    if (codes.includes(textbox.value)) {
+                        addLocalSongs(textbox.value);
+                    }
+
+                    textbox.value = "";
+                    
+                    if (!codes.includes("U.S.S Enterprise") && !codes.includes("You blockhead!") && !codes.includes("Adventure!") && !achievementUnlocked) {
+                        displayAchievement("Do I Get a Zero?");
+                        achievementUnlocked = true;
+                    }
+                };
+
+                document.querySelector("#closeButton").onclick = function() {
+                    closeControls();
+                };
+
+                document.querySelector("#openButton").onclick = function() {
+                    if (!controlsOpen) {
+                        openControls();
+                    } else {
+                        closeControls();
+                    }
+                };
+
+                document.querySelector("#tintBox").onchange = function(e) {
+                    tintRed = e.target.checked;
+                };
+
+                document.querySelector("#invertBox").onchange = function(e) {
+                    invert = e.target.checked;
+                };
+
+                document.querySelector("#noiseBox").onchange = function(e) {
+                    noise = e.target.checked;
+                };
+
+                document.querySelector("#linesBox").onchange = function(e) {
+                    lines = e.target.checked;
+                };
+
+                document.querySelector("#grayBox").onchange = function(e) {
+                    gray = e.target.checked;
+                };
+
+                document.querySelector("#brightnessSlider").oninput = function(e) {
+                    brightness = parseInt(e.target.value, 10);
+                };
+
+                document.querySelector("#speedSlider").oninput = function(e) {
+                    speed = e.target.value;
+
+                    document.getElementById("speedVal").innerHTML = "Speed: " + speed + "x";
+                    audioElement.playbackRate = speed;
+                };
+
+                document.querySelector("#delaySlider").oninput = function(e) {
+                    delayAmount = e.target.value;
+
+                    document.getElementById("delayVal").innerHTML = "Delay: " + delayAmount + " seconds";
+                };
+
+                window.addEventListener('resize', function() {
+                    resize();
+                }, false);
+                
+                // One-liner to resume playback when user interacted with the page.
+                document.querySelector('audio').addEventListener('click', function() {
+                  ctx.resume().then(() => {
+                    // call our helper function and get an analyser node
+                    analyserNode = createWebAudioContextWithAnalyserNode(audioElement);
+                  });
+                });
+
+                //Moving to the next song when this one is over
+                audioElement.addEventListener('ended', function() {
+                    currSong++;
+                    if (currSong >= sounds.length) {
+                        currSong = 0;
+                    }
+                    playStream(audioElement, sounds[currSong], soundsName[currSong]);
+                });
+
+                //Handling file uploading
+                document.querySelector("#fileButton").onchange = function() {
+                    //Getting the files from the filebutton
+                    for (var i = 0; i < this.files.length; i++) {
+
+                        //Reading the file
+                        var fileReader = new FileReader;
+                        fileReader.onload = function() {
+                            var arrayBuffer = this.result;
+                        }
+
+                        fileReader.readAsArrayBuffer(this.files[i]);
+
+                        //Getting file data
+                        var fileName = this.files.item(i).name;
+                        var url = URL.createObjectURL(this.files[i]);
+                        var opt = document.createElement('option');
+
+                        opt.value = url;
+
+                        //Cutting the filename to a certain length
+                        if (fileName.length <= 20) {
+                            opt.innerHTML = fileName;
+                        } else {
+                            fileName = fileName.substring(0, 20) + "...";
+                            opt.innerHTML = fileName;
+                        }
+
+                        //Pushing the new name to the soundsName array
+                        soundsName.push(opt.innerHTML);
+
+                        //Appending the song to the list
+                        appendSongList();
+
+                        //Putting the source in the sounds array
+                        sounds.push(url);
+
+                        //Putting the song as the current song
+                        currSong = soundsName.length - 1;
+
+                        //Playing the last song added
+                        if (i == this.files.length - 1) {
+                            playStream(audioElement, url, fileName);
+                        }
+                    };
+                }
+            }
+
+            //Display an achievement message
+            function displayAchievement(msg) {
+                var container = document.getElementById("achievement-container");
+                var achievement = document.createElement("p");
+                achievement.setAttribute("id", "achievement");
+                achievement.innerHTML = "Achievement Unlocked: " + msg;
+                
+                container.appendChild(achievement);
+            }
+
+            //Initializes the song list with the default tracks
+            function createSongList() {
+                var list = document.getElementById("songList");
+
+                //Adding the songs to the song list
+                for (var i = 0; i < soundsName.length; i++) {
+                    var songName = document.createElement("p");
+                    songName.setAttribute("id", "songName");
+                    songName.innerHTML = soundsName[i];
+
+                    //Creating the onclick method such that it plays the assosciated song when clicked
+                    var createClickHandler = function(songIndex) {
+                        return function() {
+                            currSong = songIndex;
+                            playStream(audioElement, sounds[currSong], soundsName[currSong]);
+                        }
+
+                    }
+
+                    songName.onclick = createClickHandler(i);
+                    list.appendChild(songName);
+                }
+            }
+
+            //Add extra local songs
+            function addLocalSongs(code) {
+                switch (code) {
+                    case "U.S.S Enterprise":
+                        sounds.push('media/The Picard Song.mp3');
+                        soundsName.push('The Picard Song');
+                        break;
+                    case "You blockhead!":
+                        sounds.push('media/Peanuts Theme.mp3');
+                        soundsName.push("Peanuts Theme");
+                        break;
+                    case "Adventure!":
+                        sounds.push('media/New Adventure Theme.mp3');
+                        soundsName.push('New Adventure Theme');
+                        break;
+                    case "Even further beyond":
+                        sounds.push("media/Gokus - Super.mp3");
+                        soundsName.push("Gokus - Super");
+                        break;
+                    case "I'm just a kid...":
+                        sounds.push("media/Caillou Theme Song.mp3");
+                        soundsName.push("Caillou Theme Song");
+                }
+
+                appendSongList();
+                codes.splice(codes.indexOf(code), 1);
+                currSong = sounds.length - 1;
+                playStream(audioElement, sounds[currSong], soundsName[currSong]);
+
+            }
+
+            //Adds a song to the end of the song list
+            function appendSongList() {
+                var list = document.getElementById("songList");
+                var songName = document.createElement("p");
+
+                songName.setAttribute("id", "songName");
+                songName.innerHTML = soundsName[soundsName.length - 1];
+
+                //Creating the onclick method for the new song
+                var createClickHandler = function(songIndex) {
+                    return function() {
+                        currSong = songIndex;
+                        playStream(audioElement, sounds[currSong], soundsName[currSong]);
+                    }
+                }
+                songName.onclick = createClickHandler(soundsName.length - 1);
+
+                list.appendChild(songName);
+            };
+
+            //Handles the closing and opening of the content tabs in the settings
+            function manageTabs(content, titleIndex) {
+                for (var i = 0; i < content.length; i++) {
+                    //Open or close the clicked on tab
+                    if (i == titleIndex) {
+                        if (content[i].style.height == "0%" || content[i].style.height == "") {
+                            //options.style.display = "block";
+                            content[i].style.height = "30%";
+                        } else {
+                            //options.style.display = "";
+                            content[i].style.height = "0%";
+                        }
+                    }
+
+                    //Close all other tabs
+                    if (i != titleIndex) {
+                        if (content[i].style.height == "30%") {
+                            content[i].style.height = "0%";
+                        }
+                    }
+                }
+            }
+
+            //Plays an audio file
+            function playStream(audioElement, path, name) {
+                //Setting Volume to the current Volume
+                volume = audioElement.volume;
+                audioElement.src = path;
+                audioElement.playbackRate = speed;
+                audioElement.play();
+
+                //Keeping Volume consistent when the song changes
+                audioElement.volume = volume;
+                document.querySelector('#status').innerHTML = "Now Playing: " + name;
+            }
+
+            function update() {
+                if(typeof analyserNode != 'undefined') {
+                    // this schedules a call to the update() method in 1/60 seconds
+                    requestAnimationFrame(update);
+
+                    /*
+                        Nyquist Theorem
+                        http://whatis.techtarget.com/definition/Nyquist-Theorem
+                        The array of data we get back is 1/2 the size of the sample rate 
+                    */
+
+                    // create a new array of 8-bit integers (0-255)
+                    var data = new Uint8Array(NUM_SAMPLES / 5);
+
+                    // populate the array with the frequency data
+                    // notice these arrays can be passed "by reference" 
+                    analyserNode.getByteFrequencyData(data);
+
+                    delayNode.delayTime.value = delayAmount;
+
+                    // OR
+                    if (waveform) {
+                        analyserNode.getByteTimeDomainData(data); // waveform data
+                    }
+
+                    // DRAW!
+                    ctx.clearRect(0, 0, winWidth, winHeight);
+                    var barWidth = 4;
+                    var barSpacing = 1;
+                    var barHeight = 10;
+                    var topSpacing = 5;
+
+                    // loop through the data and draw!
+                    if (colorMode != "none") {
+                        for (var i = 0; i < data.length; i++) {
+                            var radians = findRadians(data);
+
+                            var percent = data[i] / 255;
+                            var midPercent = data[i + 1] / 255;
+                            var nextPercent = data[i + 2] / 255;
+
+                            var circleRadius = percent * maxRadius;
+                            var midCircleRadius = midPercent * maxRadius;
+                            var nextCircleRadius = nextPercent * maxRadius;
+
+                            //Gradient across the page
+                            var grd = ctx.createLinearGradient(0, 0, winWidth, 0);
+
+                            grd.addColorStop(0, makeColor(red, 0, 0, .6));
+                            grd.addColorStop(.20, makeColor(0, green, 0, .6));
+                            grd.addColorStop(.40, makeColor(0, 0, blue, .6));
+                            grd.addColorStop(.60, makeColor(red, 0, 0, .6));
+                            grd.addColorStop(.80, makeColor(0, green, 0, .6));
+                            grd.addColorStop(1, makeColor(0, 0, blue, .6));
+
+                            ctx.fillStyle = grd;
+                            ctx.strokeStyle = grd;
+                            ctx.fillRect(0, winHeight, winWidth, -winHeight / 30);
+
+                            if (colorMode == "color") {
+                                ctx.fillStyle = makeColor(red, green, blue, 0.6);
+                                ctx.strokeStyle = makeColor(red, green, blue, 0.6);
+                            }
+
+                            //Top 
+                            ctx.beginPath();
+
+                            //Getting the points of the inner circle curve
+                            var pointsInner = findPoints(canvas.width / 2, canvas.height / 2, radians * i, (circleRadius * 1.5) + maxRadius);
+                            var midInner = findPoints(canvas.width / 2, canvas.height / 2, radians * (i + 1), (midCircleRadius * 1.5) + maxRadius);
+                            var nextInner = findPoints(canvas.width / 2, canvas.height / 2, radians * (i + 2), (nextCircleRadius * 1.5) + maxRadius);
+
+                            //Getting the points of the outer circle curve
+                            var pointsOuter = findPoints(canvas.width / 2, canvas.height / 2, radians * i, (circleRadius * 1.5) + data[i] + barHeight + maxRadius);
+                            var midOuter = findPoints(canvas.width / 2, canvas.height / 2, radians * (i + 1), (midCircleRadius * 1.5) + data[i + 1] * 2 + barHeight + maxRadius);
+                            var nextOuter = findPoints(canvas.width / 2, canvas.height / 2, radians * (i + 2), (nextCircleRadius * 1.5) + data[i + 2] + barHeight + maxRadius);
+
+                            //Drawing a line from Inner Curve to Outer
+                            ctx.moveTo(pointsInner.x, pointsInner.y);
+                            ctx.lineTo(pointsOuter.x, pointsOuter.y);
+
+                            //Dawing the Inner Curve
+                            ctx.moveTo(pointsInner.x, pointsInner.y);
+                            ctx.quadraticCurveTo(midInner.x, midInner.y, nextInner.x, nextInner.y);
+
+                            //Drawing the Outer Curve 
+                            ctx.moveTo(pointsOuter.x, pointsOuter.y);
+                            ctx.quadraticCurveTo(midOuter.x, midOuter.y, nextOuter.x, nextOuter.y);
+
+                            ctx.stroke();
+
+                            //Red-ish circles
+                            ctx.beginPath();
+                            ctx.fillStyle = makeColor(255, 111, 111, .34 - percent / 3.0);
+                            ctx.arc(canvas.width / 2, canvas.height / 2, circleRadius, 0, 2 * Math.PI, false);
+                            ctx.fill();
+                            ctx.closePath();
+
+                            //Blue-ish circles
+                            ctx.beginPath();
+                            ctx.fillStyle = makeColor(0, 0, 255, .10 - percent / 10.0);
+                            ctx.arc(canvas.width / 2, canvas.height / 2, circleRadius * 1.5, 0, 2 * Math.PI, false);
+                            ctx.fill();
+                            ctx.closePath();
+
+                            //Yellow circles
+                            ctx.beginPath();
+                            ctx.fillStyle = makeColor(200, 200, 0, .5 - percent / 5.0);
+                            ctx.arc(canvas.width / 2, canvas.height / 2, circleRadius * 0.5, 0, 2 * Math.PI, false);
+                            ctx.fill();
+                            ctx.closePath();
+                        }
+
+                        manipulatePixels();
+                    }
+                }
+            }
+
+
+            //Filter Code
+            function manipulatePixels() {
+                //Getting the RGBA pixel data
+                var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+                //imageData.data is an 8-bit typed array (0-255)
+                //4 values per pixel
+                var data = imageData.data;
+                var length = data.length;
+                var width = imageData.width;
+
+                //Iterate through pixels
+                //Step 4 to manipulate 1 pixel per iteration
+                for (var i = 0; i < length; i += 4) {
+                    var red = data[i],
+                        green = data[i + 1],
+                        blue = data[i + 2];
+
+                    //Increasing each channel in the image data
+                    if (brightness > 0) {
+
+                        red = Math.min(red + brightness, 255) /*red < 255 ? red + brightness : 255*/ ;
+                        green = Math.min(green + brightness, 255) /*green < 255 ? green + brightness : 255*/ ;
+                        blue = Math.min(blue + brightness, 255) /*blue < 255 ? blue + brightness : 255*/ ;
+
+                        data[i] = red;
+                        data[i + 1] = green;
+                        data[i + 2] = blue;
+                    }
+
+                    //increase red value only
+                    if (tintRed) {
+                        data[i] = data[i] + 100;
+                    }
+
+                    if (noise && Math.random() < .05) {
+                        data[i] = data[i + 1] = data[i + 2] = 128; //Gray Noise
+
+                        data[i + 3] = 200; //Alpha of noise
+                    }
+
+                    if (lines) {
+                        var row = Math.floor(i / 4 / winWidth);
+                        if (row % 50 == 0) {
+                            //this row
+                            data[i] = data[i + 1] = data[i + 2] = data[i + 3] = 255;
+
+                            //Next row
+                            data[i + (width * 4)] = data[i + (width * 4) + 1] = data[i + (width * 4) + 2] = data[i + (width * 4) + 3] = 255;
+                        }
+                    }
+
+                    //Grayscale
+                    if (gray) {
+                        var avg = (red + green + blue) / 3;
+
+                        data[i] = data[i + 1] = data[i + 2] = avg
+                    }
+
+                    if (invert) {
+                        data[i] = 255 - red;
+                        data[i + 1] = 255 - green;
+                        data[i + 2] = 255 - blue;
+
+                        //Leaving alpha alone
+                    }
+                }
+
+                //Putting the modified data back
+                ctx.putImageData(imageData, 0, 0);
+            }
+
+            // HELPER
+            function makeColor(red, green, blue, alpha) {
+                var color = 'rgba(' + red + ',' + green + ',' + blue + ', ' + alpha + ')';
+                return color;
+            }
+
+            //Handling the slider input
+            function manageColors(slider) {
+                switch (slider.id) {
+                    case "redSlider":
+                        red = slider.value;
+                        break;
+                    case "blueSlider":
+                        blue = slider.value;
+                        break;
+                    case "greenSlider":
+                        green = slider.value;
+                        break;
+                }
+            }
+
+            //Closing all tabs when the options are closed.
+            function closeControls() {
+                var songOptions = document.getElementById("song-content");
+                var visualOptions = document.getElementById("visual-content");
+                var audioOptions = document.getElementById("audio-content");
+                var audioOptions = document.getElementById("cheat-content");
+
+                controlsOpen = false;
+
+                //Closing any open tabs
+                if (songOptions.style.height == "30%") {
+                    songOptions.style.height = "0%";
+                }
+
+                if (visualOptions.style.height == "30%") {
+                    visualOptions.style.height = "0%";
+                }
+
+                if (audioOptions.style.height == "30%") {
+                    audioOptions.style.height = "0%";
+                }
+
+                document.getElementById("controls").style.width = "0";
+            }
+
+            //Opening the control panel
+            function openControls() {
+                document.getElementById("controls").style.width = winWidth / 3 - 1 + "px";
+                controlsOpen = true;
+            }
+
+            //Finding the points on a circle given the origin, an angle, and a desired radius
+            function findPoints(xPos, yPos, angle, radius) {
+                var xVal = xPos + radius * Math.cos(angle);
+                var yVal = yPos + radius * Math.sin(angle);
+
+                //Returning an object with the points calculated
+                return {
+                    x: xVal,
+                    y: yVal
+                };
+            }
+
+            //Resizes the canvas and other elements
+            function resize() {
+                winWidth = window.innerWidth;
+                winHeight = window.innerHeight;
+                canvas.width = winWidth;
+                canvas.height = winHeight;
+
+
+
+                //Adjusting text size based on window dimensions
+                if (winWidth > winHeight) {
+                    document.getElementsByTagName("BODY")[0].style.fontSize = 2 + "vh";
+                    maxRadius = winHeight / 25;
+                } else {
+                    maxRadius = winWidth / 25;
+                    document.getElementsByTagName("BODY")[0].style.fontSize = 2 + "vw";
+                }
+
+                //Adjusting the overlay
+                var overlay = document.querySelector("#overlay");
+                overlay.style.marginLeft = winWidth / 2 - overlay.clientWidth / 2 + "px";
+
+                if (controlsOpen) {
+                    openControls();
+                }
+
+            }
+
+            function findRadians(data) {
+                var radians = 360 / data.length;
+                radians = (radians * Math.PI) / 180;
+                return radians;
+            }
+
+            // FULL SCREEN MODE
+            function requestFullscreen(element) {
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.mozRequestFullscreen) {
+                    element.mozRequestFullscreen();
+                } else if (element.mozRequestFullScreen) { // camel-cased 'S' was changed to 's' in spec
+                    element.mozRequestFullScreen();
+                } else if (element.webkitRequestFullscreen) {
+                    element.webkitRequestFullscreen();
+                }
+                // .. and do nothing if the method is not supported
+            };
+
+            window.addEventListener("load", init);
+        }());
+
+    </script>
+</head>
+
+<body>
+    <div id="controls" width="640">
+        <!--<p id="title">Settings</p>-->
+        <a href="javascript:void(0)" class="closebtn" id="closeButton">&times;</a>
+
+        <div id="name-container">
+            <header id="heading">
+                <p>Ian Moon</p>
+                <p>Audio Visualizer</p>
+            </header>
+        </div>
+
+        <header class="section-title" id="song-title">
+            Songs
+            <p id="status">???</p>
+        </header>
+        <section class="content-container" id="song-content">
+            <div class="section-content">
+                <div id="uploader">
+                    <p>
+                        Upload a Song:
+                        <input type="file" accept=".mp3" id="fileButton" multiple style="display:none" />
+                        <input type="button" value="Browse..." onclick="document.getElementById('fileButton').click();" />
+                    </p>
+                </div>
+
+                <div id="songList"></div>
+            </div>
+        </section>
+
+        <header class="section-title" id="visual-title">
+            Visuals
+        </header>
+        <section class="content-container" id="visual-content">
+            <div class="section-content">
+                <label>Color Mode:</label>
+                <select id="colorModeSelect">
+                        <option value="color">Color</option>
+                        <option value="gradient">Gradient</option>
+                        <option value="none">None</option>
+                    </select><br>
+
+                <label>Red</label><br>
+                <input type="range" class="color-slider" id="redSlider" value="200" min="0" max="255" step="1"><br>
+
+                <label>Green</label><br>
+                <input type="range" class="color-slider" id="greenSlider" value="31" min="0" max="255" step="1"><br>
+
+                <label>Blue</label><br>
+                <input type="range" class="color-slider" id="blueSlider" value="237" min="0" max="255" step="1"><br>
+
+                <label>Brightness</label><br>
+                <input type="range" id="brightnessSlider" value="0" min="0" max="255" step="1"><br>
+
+                <div id="filters">
+                    <label>Invert:</label>
+                    <input type="checkbox" id="invertBox">
+                    <br>
+
+                    <label>Red Tint:</label>
+                    <input type="checkbox" id="tintBox">
+                    <br>
+
+                    <label>Noise:</label>
+                    <input type="checkbox" id="noiseBox">
+                    <br>
+
+                    <label>Lines:</label>
+                    <input type="checkbox" id="linesBox">
+                    <br>
+
+                    <label>Grayscale:</label>
+                    <input type="checkbox" id="grayBox">
+                    <br>
+                </div>
+            </div>
+        </section>
+
+        <header class="section-title" id="audio-title">
+            Audio
+        </header>
+        <section class="content-container" id="audio-content">
+            <div class="section-content">
+                <label id="speedVal">Speed: 1x</label><br>
+                <input type="range" id="speedSlider" value="1" min=".5" max="4" step=".5"><br>
+                <label id="delayVal">Delay: 0 seconds</label><br>
+                <input type="range" id="delaySlider" value="0" min="0" max="1" step="0.1"><br>
+                <label>Waveform</label>
+                <input type="checkbox" id="waveformBox">
+            </div>
+        </section>
+
+        <header class="section-title" id="cheat-title">
+            Cheat
+        </header>
+        <section class="content-container" id="cheat-content">
+            <div class="section-content">
+                <label>Cheat Codes</label><br>
+                <input type="text" id="codeBox" maxlength="24"><br>
+                <input type="button" id="submitButton" value="Submit">
+            </div>
+        </section>
+
+    </div>
+
+    <div id="overlay">
+        <audio controls id="audioControls"></audio>
+        <span id="openButton" class="openBtn">&#9881;</span>
+    </div>
+    
+    <div id="achievement-container"></div>
+
+    <div id="main">
+        <canvas id="canvas" width="640" height="400"></canvas>
+    </div>
+
+</body>
+
+</html>

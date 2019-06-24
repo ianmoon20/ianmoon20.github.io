@@ -1,0 +1,287 @@
+<html>
+
+<head>
+    <!--
+		A canvas example from:
+		https://developer.apple.com/library/safari/documentation/AudioVideo/Conceptual/HTML-canvas-guide/DrawingLinesandShapes/DrawingLinesandShapes.html
+		Their coding style is different from what we'll be using in class - use our style, not theirs.
+	-->
+    <title>Simple curve example</title>
+    <style>
+        body {
+            background-color: #e0e0e0;
+        }
+        
+        canvas {
+            background: #ffffff;
+            cursor: pointer;
+            margin-left: 10px;
+            margin-top: 10px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+        }
+        
+        #controls {
+            background-color: white;
+            font-size: 20px;
+            font-family: sans-serif;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            padding-left: 10px;
+            margin-left: 10px;
+            width: 390px;
+        }
+
+    </style>
+    <script type="text/javascript">
+        "use strict";
+
+        window.onload = init;
+
+        var canvas, ctx,
+
+            //Control Point variables
+            control = new controlPoint(50, 300, getRandomUnitVector()),
+            control2 = new controlPoint(100, 350, getRandomUnitVector()),
+            speed = 5,
+
+            //Array of all control points
+            controlPoints = [control, control2],
+
+            //FPS variables
+            lastTime = new Date,
+            avgFPS = 0,
+            totalFrames = 0,
+            numRefresh = 0,
+            showFPS = false,
+
+            //Showing control points
+            showPoints = false;
+
+        //Control Point Contstructor
+        function controlPoint(x, y, vector) {
+            this.x = x;
+            this.y = y;
+            this.vector = vector;
+
+            //Method for moving a control point
+            this.move = function() {
+                //Moving
+                this.x += speed * this.vector.x;
+                this.y += speed * this.vector.y;
+
+                //Checking boundary collisions
+                if (this.x >= canvas.width || this.x <= 0) {
+                    this.vector.x = -this.vector.x;
+                    this.x += speed * this.vector.x;
+                }
+                if (this.y >= canvas.height || this.y <= 0) {
+                    this.vector.y = -this.vector.y;
+                    this.y += speed * this.vector.y;
+                }
+            }
+        }
+
+        function init() {
+            canvas = document.querySelector("canvas");
+
+            document.querySelector("#hideFPS").onchange = function(e) {
+                showFPS = e.target.checked;
+            };
+
+            //document.querySelector("#hideFPS").click();
+
+            document.querySelector("#hidePoints").onchange = function(e) {
+                showPoints = e.target.checked;
+            };
+
+            //document.querySelector("#hidePoints").click();
+
+            document.querySelector("#speedSlider").oninput = function(e) {
+                speed = e.target.value;
+            };
+
+            document.querySelector("#speedSlider").defaultValue = 5;
+
+            speed = document.querySelector("#speedSlider").value;
+
+            ctx = canvas.getContext("2d");
+            draw();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, 600, 600);
+
+            drawCurves();
+
+            if (showFPS) {
+                checkFPS();
+            }
+
+            //Control Point squares
+            if (showPoints) {
+                drawPoints();
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        function drawCurves() {
+            ctx.lineWidth = "3";
+            ctx.strokeStyle = "black";
+
+            //Quardratic Curve
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.quadraticCurveTo(control.x, control.y, canvas.width, canvas.height);
+            ctx.stroke();
+
+            //Bezier Curve
+            ctx.strokeStyle = "red";
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.bezierCurveTo(control.x, control.y, control2.x, control2.y, canvas.width, canvas.height);
+            ctx.stroke();
+
+            //Moving all control points if speed is above 0
+            if (speed > 0) {
+                for (var i = 0; i < controlPoints.length; i++) {
+                    //console.dir(controlPoints[i].move);
+                    controlPoints[i].move();
+
+                    //controlPoints[i] = controlPointMove(controlPoints[i]);
+                }
+            }
+
+            /*
+            //Moving control points
+            control = controlPointMove(control.x, control.y, control.vector);
+            control2 = controlPointMove(control2.x, control2.y, control2.vector);
+            */
+        }
+
+        function drawPoints() {
+            ctx.fillStyle = "black";
+            ctx.fillRect(control.x, control.y, 10, 10);
+
+            ctx.fillStyle = "black";
+            ctx.fillRect(control2.x, control2.y, 10, 10);
+        }
+
+        /*
+        //Outdated functions which took too many arguments and weren't in the right place
+        function controlPointMove(ctrlP) {
+            //Moving
+            ctrlP.x += speed * ctrlP.vector.x;
+            ctrlP.y += speed * ctrlP.vector.y;
+
+            //Checking boundary collisions
+            if (ctrlP.x >= canvas.width || ctrlP.x <= 0) {
+                ctrlP.vector.x = -ctrlP.vector.x;
+                ctrlP.x += speed * ctrlP.vector.x;
+            }
+            if (ctrlP.y >= canvas.height || ctrlP.y <= 0) {
+                ctrlP.vector.y = -ctrlP.vector.y;
+                ctrlP.y += speed * ctrlP.vector.y;
+            }
+
+            //Returning a new control point 
+            return ctrlP;
+        }
+        
+        function controlPointMove(ctrlPX, ctrlPY, vectorP) {
+            //Moving
+            ctrlPX += speed * vectorP.x;
+            ctrlPY += speed * vectorP.y;
+
+            //Checking boundary collisions
+            if (ctrlPX >= canvas.width || ctrlPX <= 0) {
+                vectorP.x = -vectorP.x;
+                ctrlPX += speed * vectorP.x;
+            }
+            if (ctrlPY >= canvas.height || ctrlPY <= 0) {
+                vectorP.y = -vectorP.y;
+                ctrlPY += speed * vectorP.y;
+            }
+
+            //Returning a new control point 
+            return {
+                x: ctrlPX,
+                y: ctrlPY,
+                vector: vectorP
+            };
+        }
+        */
+
+        function getRandom(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function checkFPS() {
+            //Getting current time
+            var newTime = new Date;
+
+            //Comparing current time to the last time the frame refreshed
+            var fps = 1000 / (newTime - lastTime);
+
+            numRefresh += 1;
+            totalFrames += fps;
+
+            avgFPS = Math.round((totalFrames / numRefresh) * 10) / 10;
+
+            //Rounding to the nearest tenth
+            fps = Math.round(fps * 10) / 10;
+
+            ctx.fillStyle = "black";
+            ctx.font = "12pt Ariel"
+            ctx.fillText("Average FPS: " + avgFPS, 250, 20);
+
+            //ctx.fillText("Current FPS: " + fps, 250, 40);
+
+            //Setting the last refresh time to the current time
+            lastTime = newTime;
+
+            //Possibly refreshing the average FPS counter every 3 seconds?
+            /*if (numRefresh >= avgFPS * 3000) {
+                numRefresh = 0;
+                lastTime = new Date;
+                totalFrames = 0;
+            }
+            */
+        }
+
+        function getRandomUnitVector() {
+            var x = getRandom(-1, 1);
+            var y = getRandom(-1, 1);
+            var length = Math.sqrt(x * x + y * y);
+            if (length == 0) {
+                x = 1;
+                y = 0;
+                length = 1;
+            } else {
+                x /= length;
+                y /= length;
+            }
+
+            return {
+                x: x,
+                y: y
+            };
+        }
+
+    </script>
+</head>
+
+<body>
+    <canvas height="600" width="400"></canvas>
+
+    <div id="controls">
+        <label>Show FPS <input type="checkbox" id="hideFPS"></label>
+        <label>Show Points <input type="checkbox" id="hidePoints"></label>
+        <div id="slider-wrapper">
+            <label>Speed Slider <input type ="range" min="0.0" max="10" id="speedSlider">
+            </label>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,58 @@
+#header
+{
+	background: #B21F00;
+	border-width: 5px;
+	border-style: solid;
+	text-align: center;
+	margin: 10px 10px;
+}
+
+.picture
+{
+	text-align: center;
+}
+
+#left
+{
+	float: left;
+	font-size: 1.5em;
+	width: 45%;
+	margin: 10px;
+	overflow: hidden;
+}
+
+#right
+{
+	float: left;
+	font-size: 1.5em;
+	width: 45%;
+	margin: 10px;
+}
+
+footer
+{
+	clear: both;
+	font-size: .8em;
+	text-align: center;
+	padding: 5px 10px;
+}
+
+table
+{
+	width: 95%;
+	border: 2px solid gray;
+	border-spacing: 10px;
+	padding: 10px;
+}
+
+td
+{
+	border: 1px solid gray;
+	font-weight: bold;
+}
+
+th
+{
+	border: 2px solid black;
+	background: gray;
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Contact Form</title>
+</head>
+<body>
+    <form method="post" action="https://people.rit.edu/imm3350/230/exercises/formmail.php" name="SampleForm">
+        <input type="hidden" name="env_report" value="REMOTE_HOST,REMOTE_ADDR,HTTP_USER_AGENT,AUTH_TYPE,REMOTE_USER" />
+
+        <input type="hidden" name="recipients" value="imm3350@rit.edu" />
+
+        
+        <input type="hidden" name="required" value="EmailAddr:Your email address,FullName:Your name" />
+
+        <input type="hidden" name="subject" value="Website Mail" />
+
+        <input type="hidden" name="derive_fields" value="email=EmailAddr,realname=FullName" />
+
+        <input type="hidden" name="mail_options" value="Exclude=email;realname" />
+
+        <table border="2" cellspacing="10%">
+            <tr>
+                <td>
+                <p>Name:</p>
+                </td>
+                <td><input type="text" name="FullName" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                <p>Email Address:</p>
+                </td>
+                <td><input type="text" name="EmailAddr" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>Purpose on the Site:</p>
+                </td>
+                <td>
+                    Browsing     <input type="checkbox" name="Purpose[]" value="browsing" />
+                    Potential Employer    <input type="checkbox" name="Purpose[]" value="employer" />
+                    Other  <input type="checkbox" name="Purpose[]" value="other" />
+                 </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Subject:
+                </td>
+
+                <td>
+                    <input type="text" name="subject" />
+                </td>
+            </tr>
+
+            <tr>
+                <td valign="top">
+                    
+                    <p>Please enter your message:</p>
+
+                </td>
+                <td><textarea name="Message" rows="15" cols="100"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Submit" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

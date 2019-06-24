@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+
+<body>
+	<header>
+		<h3>Current Date: <!--#echo var="DATE_LOCAL"--></h3>
+
+		<h3>Your IP: <!--#echo var="REMOTE_ADDR"--></h3>
+		<h3>Server IP: <!--#echo var="SERVER_ADDR"--></h3>
+	</header>
+</body>
+
+</html>

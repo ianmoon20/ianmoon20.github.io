@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>XHR XML Example</title>
+    <style>
+        * {
+            font-family: tahoma, verdana, sans-serif;
+        }
+        
+        .concert {
+            border-width: 1px;
+            border-style: solid;
+            margin: 5px;
+            padding: 5px;
+        }
+
+    </style>
+    <script>
+        "use strict";
+
+        (function() {
+            window.onload = init;
+
+            function init() {
+                document.querySelector('#mybutton').onclick = loadData;
+            }
+
+            function loadData() {
+                var xhr = new XMLHttpRequest();
+                var allConcerts = [];
+                xhr.onload = function() {
+                    var xml = xhr.responseXML;
+                    debugger;
+                    allConcerts = xml.querySelectorAll('event');
+                    document.querySelector('#content').innerHTML = "There are " + allConcerts.length + " concerts!";
+                }
+
+                var url = "last-fm-results.xml";
+                xhr.open('GET', url, true);
+                // try to prevent browser caching by sending a header to the server
+                xhr.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2010 00:00:00 GMT");
+                xhr.send();
+
+                xhr.onload = function() {
+                    //Create a section
+                    var section = document.createElement('section');
+
+                    //Create the heading
+                    var h2Concert = document.createElement('h2');
+                    h2Concert.textContent = 'Here are the old concerts!';
+
+                    //Adding the heading to the section
+                    section.appendChild(h2Concert);
+
+                    var xml = xhr.responseXML;
+
+                    //Get an array of the joke elements
+                    var allConcerts = xml.querySelectorAll('event');
+
+                    //Loop through the joke elements
+                    for (var i = 0; i < allConcerts.length; i++) {
+                        var concert = allConcerts[i];
+
+                        //Getting the question element
+                        var title = concert.querySelector('title').innerHTML;
+
+                        //Getting the answer
+                        var city = concert.querySelector('city').innerHTML;
+
+                        //Getting the rating
+                        var startDate = concert.querySelector('startDate').innerHTML;
+
+                        //Getting the rating
+                        var image = concert.querySelectorAll('image');
+
+                        var imageSrc = "";
+
+                        for (var j = 0; j < image.length; j++) {
+                            if (image[j].getAttribute("size") == "extralarge") {
+                                imageSrc = image[j];
+                            }
+                        }
+
+                        //Making a div for the joke
+                        var div = document.createElement('div');
+
+                        //Adding joke to a classlist for styling
+                        div.classList.add('concert');
+
+
+                        //Creating an h3
+                        var h3 = document.createElement('h3');
+
+                        h3.textContent = title;
+
+                        div.appendChild(h3);
+
+                        //Creating the first paragraph and appending it
+                        var p1 = document.createElement('p');
+
+                        var em = document.createElement('em');
+
+                        em.textContent = city + " -- " + startDate;
+
+                        p1.appendChild(em);
+
+                        div.appendChild(p1);
+
+                        //Creating a second paragraph
+                        var imageAppend = document.createElement('img');
+
+                        imageAppend.src = imageSrc.innerHTML;
+
+                        div.appendChild(imageAppend);
+
+                        //Appending the div with all the information
+                        section.appendChild(div);
+                    }
+
+                    var content = document.querySelector("#content");
+
+                    content.innerHTML = "";
+
+                    content.appendChild(section);
+                }
+            }
+
+
+
+        }())
+
+    </script>
+</head>
+
+<body>
+    <h1>Concerts!</h1>
+    <p><button id='mybutton'>Fetch Data</button></p>
+    <div id='content'></div>
+
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+h1
+{
+    font-family: 'Oswald', sans-serif;
+}
+
+h2
+{
+    font-family: 'Oswald', sans-serif;
+}
+
+p, blockquote
+{
+    font-family: "Georgia";
+    font-size: 16px;
+    line-height: 150%;
+}
+body
+{
+    width: 600px;
+}

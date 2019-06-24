@@ -1,0 +1,35 @@
+Audio Visualizer
+Ian Moon
+imm3350@g.rit.edu
+
+TO DO:
+________________________________________________________________________________________________________________
+Stylize the row elements of the table (Each other one needs a different background color)
+
+Display song durations
+
+Move section-title:hover to onclick.
+
+Remake HTML5 Player
+	Create a Play Button
+	Create a Pause Button
+	Create a Next Button
+	Create a Previous Button
+	Create Volume Button
+	Create a Volume Slider
+
+Check url of the song when uploading to make sure the same song isn't uploaded
+
+Change border-width of the controls div
+
+Style the section-content div
+
+
+POTENTIAL CHANGES TO UI:
+________________________________________________________________________________________________________________
+Move controls Songs content to the Overlay
+
+Put controls on the bottom?
+
+Seperate the Controls into three buttons on the bottom/top
+	- Media Player on opposite side

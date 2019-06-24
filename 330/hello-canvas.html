@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Template</title>
+	<link href="https://fonts.googleapis.com/css?family=Copse|Source+Code+Pro" rel="stylesheet">
+	<style type="text/css">
+	/** Loading fonts without JS loader
+	We are making a hidden area on the page where we can put text to force the fonts to load but it will not be viewable to the user. Once the fonts are loaded into memory, they will be available to the canvas
+	**/
+	
+	#fontLoader
+	{
+	height: 0;
+	width: 0;
+	overflow: hidden;
+	}
+	
+	#Source
+	{
+		font-family: 'Source Code Pro';
+	}
+
+	#Copse
+	{
+		font-family: 'Copse';
+	}>
+	canvas
+	{
+		border:1px solid gray;
+	}
+	</style>
+	<script>
+		// #0 - In this course we will always use ECMAScript 5's "strict" mode
+		// See what 'use strict' does here:
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/Strict_mode
+		'use strict';
+		
+		// #1 call the init function after the pages loads
+		// this is called an "event handler"
+		window.onload = init;
+		
+		function init(){
+			// #2 Now that the page has loaded, start drawing!
+			console.log('init called');
+			
+			// A - canvas variable points at <canvas> tag
+			var canvas = document.querySelector('canvas');
+			
+			// B - the ctx variable points at a "2D drawing context"
+			var ctx = canvas.getContext('2d');
+			
+			// C - all fill operations are now in red-ish
+			ctx.fillStyle = '#B2403C';
+			
+			// D - fill a rectangle with the current fill color
+			ctx.fillRect(0,0,680,480);
+			
+			// E - set the current font
+			ctx.font = '60pt Source Code Pro';
+			
+			// F - change the current fill color
+			ctx.fillStyle = '#FFF20D';
+			
+			//Horizontal Alignment
+			ctx.textAlign = "center";
+			
+			//Vertical Alignment
+			ctx.textBaseline = "middle";
+
+			//saving default ctx styles
+			ctx.save();
+
+			//Set shadow properties
+			ctx.shadowColor = "#317AB2";
+			ctx.shadowOffsetX = 0;
+			ctx.shadowOffsetY = 0;
+			ctx.shadowBlur = 30;
+			
+			// G - draw and fill text using current fill color
+			ctx.fillText('Ian Moon',320,240);
+			
+			//going back to the default style
+			ctx.restore();
+
+			//Rectangles
+			ctx.fillRect(50, 210, 50,50);
+			ctx.fillRect(540, 210, 50,50);
+			
+			//Next line
+			ctx.font = '34pt Copse';
+			
+			//Word Color
+			ctx.fillStyle = '#199AFF';
+			
+			//Word
+			ctx.fillText('IGM 330',320, 320);
+
+			//2 more drawing state variables
+			ctx.strokeStyle = "#F7EA00"
+			ctx.lineWidth = 7;
+
+			//start defining a path - a line in this case
+			ctx.beginPath();
+
+			//move a "pen" to a point
+			ctx.moveTo(0,100);
+
+			//draw to 640, 100
+			ctx.lineTo(640, 100);
+
+			//close the path
+			ctx.closePath();
+
+			//stroke the path
+			ctx.stroke();
+
+			//Second Line - Vertical
+			ctx.strokeStyle = "#1583D9";
+			ctx.lineWidth = 5;
+
+			ctx.beginPath();
+			ctx.moveTo(25, 0);
+			ctx.lineTo(25,480);
+			ctx.closePath();
+			ctx.stroke();
+
+			//Triangles
+			ctx.strokeStyle = "#FFF20D";
+			ctx.beginPath();
+			ctx.moveTo(45,210);
+			ctx.lineTo(105, 210);
+			ctx.lineTo(75, 180);
+			ctx.closePath();
+			ctx.stroke();
+
+			ctx.beginPath();
+			ctx.moveTo(535,210);
+			ctx.lineTo(595, 210);
+			ctx.lineTo(565, 180);
+			ctx.closePath();
+			ctx.stroke();
+
+			
+			
+			/*
+			Make your version different:
+
+			i) Change the yellow rectangle to a different solid color.
+
+			ii) Change the text to your name, and change the color of the text to 
+			something else. Note: Color can be specified in any legal CSS way, 
+			i.e. pre-defined keyword, hex, shorthand hex, RGB value, RGB percentage, RGBA,
+			 or even HSL
+			http://www.w3schools.com/cssref/css_colors_legal.asp
+
+
+			iii) Change the font of your name to something else. If you know how to embed
+			 web fonts, find something here and use it: http://www.google.com/fonts
+
+			iv) Add another line of text that reads “IGM”. Make sure that this text
+			 appears in a different color and font than your name did.
+
+			v) Add two squares to your canvas (50 x 50  or so) using 
+			ctx.fillRect(x,y,width,height)- and make sure that the square color is the 
+			same as the first text you 
+			drew (your name).
+
+			*/
+
+
+
+		}
+	</script>
+</head>
+<body>
+	<canvas width="640" height="480">
+		Get a real browser!
+		<!-- The user will only see the above text if their browser is older and doesn't support <canvas> -->
+	</canvas>
+
+	<div id="fontLoader">
+		<p id="Source">Source</p>
+		<p id="Copse">Copse</p>
+	</div>
+</body>
+</html>

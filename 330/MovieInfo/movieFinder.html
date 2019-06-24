@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Theater Finder</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://bootswatch.com/3/slate/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Raleway" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        #map {
+            width: 100%;
+            height: 400px;
+            background-color: grey;
+        }
+        
+        #pac-input {
+            margin-bottom: 10px;
+        }
+        
+        .gm-style .gm-style-iw {
+            font-size: 12px;
+            font-family: 'Playfair Display', serif;
+            color: black;
+        }
+        
+        p, a {
+            font-family: 'Raleway';
+        }
+    </style>
+    <script>
+        //https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
+        //https://developers.google.com/maps/documentation/javascript/examples/map-geolocation
+        //https://stackoverflow.com/questions/15140803/styling-infowindow-with-google-maps-api
+
+        var map;
+        var infowindow;
+        var mapLocation;
+
+        function initMap() {
+            mapLocation = {
+                lat: 43.081,
+                lng: -77.675
+            };
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: mapLocation,
+                zoom: 13
+            });
+
+            infowindow = new google.maps.InfoWindow();
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    map.setCenter(pos);
+                    mapLocation = pos;
+                    var service = new google.maps.places.PlacesService(map);
+                    service.nearbySearch({
+                        location: mapLocation,
+                        radius: 804672, //range in meters (This is equal to 500 miles)
+                        type: ['movie_theater']
+                    }, callback);
+                }, function() {
+                    var service = new google.maps.places.PlacesService(map);
+                    service.nearbySearch({
+                        location: map.getCenter(),
+                        radius: 804672, //range in meters (This is equal to 500 miles)
+                        type: ['movie_theater']
+                    }, callback);
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        }
+
+        function callback(results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                for (var i = 0; i < results.length; i++) {
+                    createMarker(results[i]);
+                }
+            }
+        }
+
+        function createMarker(place) {
+            var placeLoc = place.geometry.location;
+            var marker = new google.maps.Marker({
+                map: map,
+                position: place.geometry.location
+            });
+
+            google.maps.event.addListener(marker, 'click', function() {
+                infowindow.setContent(place.name);
+                infowindow.open(map, this);
+            });
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+        }
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class=navbar-header>
+                <a class="navbar-brand" href="index.html">Movie Searcher</a>
+                <a class="navbar-brand" href="movieFinder.html">Theater Finder</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="jumbotron">
+            <div id="map"></div>
+            <p class="text-center small">Finds any theatre within a certain range of your location.</p>
+        </div>
+    </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCS9nPWf7ONJh6vdU-8AQ2g6Yo6AE2wwM&libraries=places&callback=initMap" async defer></script>
+</body>
+
+</html>

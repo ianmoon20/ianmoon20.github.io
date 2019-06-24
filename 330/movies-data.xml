@@ -1,0 +1,30 @@
+<movies>
+	<movie rating="93">
+		<title>Thor: Ragnarak</title>
+		<actor>Chris Hemsworth</actor>
+	</movie>
+	<movie rating="32">
+		<title>A Bad Mom's Christmas</title>
+		<actor>Mila Kunis</actor>
+	</movie>
+	<movie rating="100">
+		<title>Lady Bird</title>
+		<actor>Saoirse Ronan</actor>
+	</movie>
+	<movie rating="96">
+		<title>The Lord of the Rings: The Two Towers</title>
+		<actor>Elijah Wood</actor>
+	</movie>
+	<movie rating="76">
+		<title>My Friend Dahmer</title>
+		<actor>Ross Lynch</actor>
+	</movie>
+	<movie rating="83">
+		<title>Blade of the Immortal (Mugen no jûnin)</title>
+		<actor>Takuya Kimura</actor>
+	</movie>
+	<movie rating="51">
+		<title>LBJ</title>
+		<actor>Woody Harrelson</actor>
+	</movie>
+</movies>

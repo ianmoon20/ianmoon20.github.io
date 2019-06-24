@@ -1,0 +1,9 @@
+Gameplay Sound Effects: https://opengameart.org/content/512-sound-effects-8-bit-style
+
+Coin Collection: https://freesound.org/people/ProjectsU012/sounds/341695/
+
+Gameplay Loop: https://freesound.org/people/B_Lamerichs/sounds/220331/
+
+Main Menu: https://freesound.org/people/joshuaempyre/sounds/251461/
+
+Tutorial: https://github.com/MattMcFarland/phaser-menu-system

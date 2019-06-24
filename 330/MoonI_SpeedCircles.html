@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Speed Circles 1</title>
+    <style type="text/css">
+        body {
+            background: #dddddd;
+            font-family: verdana, tahoma, sans-serif;
+            font-size: .8em;
+            margin: 0px;
+        }
+        
+        #canvas,
+        #controls {
+            background: #ffffff;
+            cursor: pointer;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            padding: 0px;
+        }
+        
+        #controls {
+            padding: 5px;
+            width: 490px;
+        }
+        
+        #controls div {
+            margin-bottom: 5px;
+        }
+        
+        #assignment {
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+        
+        #widthBox,
+        #heightBox {
+            width: 50px;
+        }
+
+    </style>
+
+    <script>
+        "use strict";
+
+        // global variables
+        var canvas, ctx,
+            boxChecked = false,
+            sliderValue = 250,
+            dragging = false,
+            mouse, touch,
+            circles = [],
+            filename = "image",
+            winWidth, winHeight,
+            lastTime = new Date;
+
+
+        function Circle(x, y, radius, maxLifespan) {
+            this.x = x;
+            this.y = y;
+            this.radius = radius;
+
+            //How long the circle will be displayed in 
+            this.maxLifespan = maxLifespan;
+            this.lifespan = this.maxLifespan;
+
+            this.color = getRandomColor();
+        }
+
+        /* init() is called when the page loads */
+        function init() {
+            canvas = document.querySelector("#canvas");
+            ctx = canvas.getContext("2d");
+            canvas.addEventListener("mousedown", doMousedown);
+            canvas.addEventListener("mousemove", doMousemove);
+            canvas.addEventListener("mouseup", doMouseup);
+            canvas.addEventListener("touchstart", doTouchStart);
+            canvas.addEventListener("touchend", doTouchend);
+            canvas.addEventListener("touchmove", doTouchMove);
+            canvas.addEventListener("mouseleave", doMouseleave);
+            window.addEventListener('resize', function() {
+                resizeCanvas(winWidth, winHeight);
+            }, false);
+            setupUI();
+            resizeCanvas(500, 500);
+            draw();
+        }
+
+        function draw() {
+            drawCircles();
+            //console.log("draw called");
+            requestAnimationFrame(draw);
+        }
+
+        /* Hook up UI widgets to canvas */
+        function setupUI() {
+            /* clear button */
+            document.querySelector("#clearButton").onclick = function() {
+                clearCanvas();
+                circles.length = 0;
+            }
+
+            document.querySelector("#filenameBox").defaultValue = filename;
+
+            document.querySelector("#filenameBox").oninput = function(e) {
+                filename = "" + e.target.value;
+            }
+
+            // The below event handlers are pointing at anonymous functions
+
+            /* save button */
+            document.querySelector("#saveButton").onclick = function(e) {
+                // open a new window and load the image in it
+                // http://www.w3schools.com/jsref/met_win_open.asp
+
+                var link = document.createElement("a");
+                link.download = filename + ".png";
+
+                canvas.toBlob(function(blob) {
+                    link.href = URL.createObjectURL(blob);
+                    //console.log(blob);
+                    //console.log(link.href);
+                    link.click();
+                }, 'image/png');
+
+                //This way didn't work
+                //var data = canvas.toDataURL();
+                //var windowName = "canvasImage";
+                //var windowOptions = "left=0,top=0,width=" + canvas.width + ",height=" + canvas.height + ",toolbar=0,resizable=0";
+                //var myWindow = window.open(data, windowName, windowOptions);
+                //myWindow.resizeTo(canvas.width, canvas.height); // needed so Chrome would display image
+            };
+
+
+            /* slider (just updates the text for now) */
+            document.querySelector("#slider1").oninput = function(e) {
+                console.log("value=" + e.target.value);
+                document.querySelector("#sliderResults").innerHTML = e.target.value;
+                // YOUR COOL SLIDER CODE GOES HERE
+                sliderValue = e.target.value;
+            };
+
+
+            /* checkbox (just updates the text for now) */
+            document.getElementById('myCheckbox').onchange = function(e) {
+                console.log("checked=" + e.target.checked);
+                boxChecked = e.target.checked;
+                var msg = "";
+                if (e.target.checked) {
+                    msg = "checked";
+                }
+                document.querySelector("#checkboxResults").innerHTML = msg;
+                // YOUR COOL CHECKBOX CODE GOES HERE
+            };
+
+            document.querySelector("#applyButton").onclick = function() {
+                var width = document.querySelector("#widthBox").value;
+                var height = document.querySelector("#heightBox").value;
+                resizeCanvas(width, height);
+            }
+
+
+        } // end function setupUI
+
+
+        /* MOUSE EVENTS */
+
+        function doMouseup(e) {
+            dragging = false;
+        }
+
+        function doMousedown(e) {
+            // YOUR COOL MOUSEDOWN CODE GOES HERE
+            dragging = true;
+            mouse = getMouse(e);
+            circles.push(new Circle(mouse.x, mouse.y, 5, sliderValue));
+            if (boxChecked) {
+                circles.push(new Circle(canvas.width / 2 - (mouse.x - canvas.width / 2), mouse.y, 5, sliderValue));
+            }
+
+            //console.log(circles[0]);
+            //console.log(circles[1]);
+        }
+
+        function doMousemove(e) {
+            // YOUR COOL MOUSEMOVE CODE GOES HERE
+            if (dragging) {
+                var oldX = mouse.x,
+                    oldY = mouse.y;
+
+                mouse = getMouse(e);
+                var dist = distanceBetween(oldX, oldY, mouse.x, mouse.y);
+
+                //console.log(dist);
+
+                circles.push(new Circle(mouse.x, mouse.y, dist, sliderValue));
+
+                if (boxChecked) {
+                    circles.push(new Circle(canvas.width / 2 - (mouse.x - canvas.width / 2), mouse.y, dist, sliderValue));
+                }
+            }
+        }
+
+        function doMouseleave(e) {
+            // YOUR COOL MOUSELEAVE CODE GOES HERE
+            dragging = false;
+        }
+
+        function doTouchStart(e) {
+            if (e.target == canvas) {
+                e.preventDefault();
+            }
+
+            dragging = true;
+            touch = getTouchPos(e);
+            circles.push(new Circle(touch.x, touch.y, 5, sliderValue));
+            if (boxChecked) {
+                circles.push(new Circle(canvas.width / 2 - (touch.x - canvas.width / 2), touch.y, 5, sliderValue));
+            }
+
+            //console.log(circles[0]);
+            //console.log(circles[1]);
+        }
+
+        function doTouchend(e) {
+            if (e.target == canvas) {
+                e.preventDefault();
+            }
+
+            dragging = "false";
+        }
+
+        function doTouchMove(e) {
+            if (e.target == canvas) {
+                e.preventDefault();
+            }
+
+            if (dragging) {
+                var oldX = touch.x,
+                    oldY = touch.y;
+
+                touch = getTouchPos(e);
+                var dist = distanceBetween(oldX, oldY, touch.x, touch.y);
+
+                //console.log(dist);
+
+                circles.push(new Circle(touch.x, touch.y, dist, sliderValue));
+
+                if (boxChecked) {
+                    circles.push(new Circle(canvas.width / 2 - (touch.x - canvas.width / 2), touch.y, dist, sliderValue));
+                }
+            }
+
+            //console.log(circles[0]);
+            //console.log(circles[1]);
+        }
+
+        /* CANVAS DRAWING CODE */
+        function drawCircles() {
+            clearCanvas();
+            updateCircles();
+            for (var i = 0; i < circles.length; i++) {
+                var newColor = "rgba" + circles[i].color.substring(3, circles[i].color.length - 1) + ", " + circles[i].lifespan / circles[i].maxLifespan + ")";
+
+                //console.log(newColor);
+                ctx.fillStyle = newColor;
+                ctx.beginPath();
+                //  ctx.arc(x,y,radius,startAngle,endAngle, clockwise)
+                ctx.arc(circles[i].x, circles[i].y, circles[i].radius, 0, Math.PI * 2, false);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+            }
+        }
+
+        function updateCircles() {
+            var newTime = new Date;
+            for (var i = 0; i < circles.length; i++) {
+
+                //console.log(circles[i].lifespan);
+                circles[i].lifespan -= (newTime - lastTime);
+                //console.log(circles[i].lifespan);
+
+                if (circles[i].lifespan <= 0) {
+                    circles.splice(i, 1);
+                }
+
+                //console.log(circles[0]);
+            }
+
+            lastTime = newTime;
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+
+        function resizeCanvas(width, height) {
+            //console.log(window.innerWidth);
+            if (canvas.width > window.innerWidth) {
+                canvas.width = window.innerWidth;
+            }
+            if (width < window.innerWidth && width > window.innerWidth / 4) {
+                winWidth = width;
+                //console.log(winWidth);
+                canvas.width = winWidth;
+            }
+
+            if (canvas.height > window.innerHeight) {
+                canvas.height = window.innerHeight;
+            }
+            if (height < window.innerHeight && height > 200) {
+                winHeight = height;
+                canvas.height = winHeight;
+            }
+
+            canvas.style.marginLeft = window.innerWidth / 2 - (canvas.width - canvas.width / 2) + "px";
+            document.querySelector("#controls").style.marginLeft = window.innerWidth / 2 - (canvas.width - canvas.width / 2) + "px";
+            document.querySelector("#controls").style.width = canvas.width - 10 + "px";
+        }
+
+        /* HELPER FUNCTIONS */
+
+        // adjusts coordinates of mouse over the window, to local mouse coordinates over the canvas
+        function getMouse(e) {
+            var mouse = {}
+            mouse.x = e.pageX - e.target.offsetLeft;
+            mouse.y = e.pageY - e.target.offsetTop;
+            return mouse;
+        }
+
+        function getTouchPos(e) {
+            var rect = canvas.getBoundingClientRect();
+
+            return {
+                x: e.touches[0].clientX - rect.left,
+                y: e.touches[0].clientY - rect.top
+            };
+        }
+
+        // returns a random color of alpha 1.0
+        // http://paulirish.com/2009/random-hex-color-code-snippets/
+        function getRandomColor() {
+            var red = Math.round(Math.random() * 254 + 1);
+            var green = Math.round(Math.random() * 254 + 1);
+            var blue = Math.round(Math.random() * 254 + 1);
+            var color = 'rgb(' + red + ',' + green + ',' + blue + ')';
+            //	var color='rgba('+red+','+green+','+blue+',0.50)'; // 0.50 alpha
+            return color;
+        }
+
+        // used to calculate how fast the mouse is moving
+        function distanceBetween(x1, y1, x2, y2) {
+            var dx = x2 - x1;
+            var dy = y2 - y1;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        window.onload = init;
+
+    </script>
+</head>
+
+<body>
+    <canvas id="canvas" height="500" width="500"></canvas>
+    <div id="controls">
+        <div>
+            <span><input id="clearButton" type="button" value="Clear Canvas"/></span>
+            <span style="float:right"><input id='saveButton' type='button' value='Save Image'/></span>
+        </div>
+
+        <div>
+            <label for="slider1">Circle Lifespan(ms)</label>
+            <input id="slider1" type="range" min="250" max="10000" step="250" value="250" />
+            <span style="float:right" id="sliderResults">250</span>
+        </div>
+        <div>
+            <span>
+			<label for="myCheckbox">Mirror</label>
+			<input type="checkbox" id="myCheckbox">
+		</span>
+            <span style="float:right" id="checkboxResults">unchecked</span>
+        </div>
+
+        <div>
+            <span>
+			<label for="widthBox">Canvas Width</label>
+			<input type="text" id="widthBox" maxlength="4">
+		</span>
+            <span>
+			<label for="heightBox">Canvas Height</label>
+			<input type="text" id="heightBox" maxlength="4">
+		</span>
+            <span><input id="applyButton" type="button" value="Apply"/></span>
+
+        </div>
+
+        <div>
+            <span>
+			<label for="filenameBox">Filename</label>
+			<input type="text" id="filenameBox">
+		</span>
+        </div>
+
+        <hr/>
+        <div>
+            <p>Click and drag in the canvas window. The faster you drag, the bigger the circles are. Best viewed in Chrome or Safari.</p>
+        </div>
+    </div>
+
+    <div id="assignment">
+        <h2>Homework</h2>
+        <p>1) (20%) Enable the checkbox - checking it will cause all of the circles to be drawn at 50% alpha.</p>
+        <p>2) (30%) Create an additional variation of this <i>speed circle</i> theme, or on a similar theme such as <i>symmetry</i>. This should be SIGNIFICANTLY different from the base files. Tell us what the variation is so that we can read it right here: <em>The circles now have a lifespan, which as it decreases causes the transparency of that circle to increase. The amount of lifespan each circle has is adjusted with the slider. The checkbox toggles "Mirror Mode" where when circles are created, another circle is created that is mirrored across the y-axis. The save image button was fixed. Saving is now done by downloading the canvas as a PNG image to the download folder. The filename can be changed via input in the text box. The canvas can also be resized, within reasonable limits. Finally, the page also works on mobile, with the exception of saving. Note: I emailed Professor Van De Mark in advance and got confirmation I could use the checkbox for something besides alpha adjustment if it was replaced by "something very cool".</em></p>
+        <p>3) (20%) Circle traits are based on mouse position or movement speed.</p>
+        <p>4) (30%) Slider affects circle drawing. The slider should show an obvious visual effect to the circles. </p>
+        <br/>
+        <p>Check out the Khan Academy examples (written in processing) here: <a href="http://www.khanacademy.org/cs/speed-circles/964929070">Speed Circles</a> &amp; <a href="http://www.khanacademy.org/cs/mouse-interaction-symmetry/1009519497">Symmetry</a></p>
+        <p>Here's our original <i><a href="speed_circles_1.html">Speed Circles JS</a></i>, and in-class variation example: <i><a href="speed_circles_2.html">Speed Circles JS 2</a></i>.</p>
+    </div>
+</body>
+
+</html>
