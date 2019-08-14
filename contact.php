@@ -58,7 +58,8 @@ Message: "."
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 		<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 
-		<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Vollkorn&display=swap" rel="stylesheet">
 	</head>
 	<body>
 		<nav class="navbar navbar-default navbar-fixed-top">
@@ -131,8 +132,9 @@ Message: "."
 						</div>
 					</form>
 				<div class="col-sm-2 centered"></div>
-				</div>
-			</div>
-		</section>
-	</body>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
 </html>
