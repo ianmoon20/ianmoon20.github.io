@@ -10,8 +10,9 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css">
     <link rel="stylesheet" href="css/stylesheet.css" type="text/css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Vollkorn&display=swap" rel="stylesheet">
@@ -34,10 +35,9 @@
                     <li><a href="graphics.html">Art</a></li>
                     <li><a href="notes.html">Notes</a></li>
                     <li><a href="contact.php">Contact</a></li>-->
-                    <li><a href="media/resume.pdf" target="_blank">About Me</a>
-                        <li><a href="media/resume.pdf" target="_blank">Resume</a>
-                            <li><a href="contact.php" target="_blank">Contact</a>
-                            </li>
+                    <li><a href="media/resume.pdf" target="_blank">About Me</a></li>
+                    <li><a href="media/resume.pdf" target="_blank">Resume</a></li>
+                    <li><a href="contact.php" target="_blank">Contact</a></li>
                 </ul>
             </div>
         </div>
@@ -54,48 +54,38 @@
         <h3>Projects</h3><br />
         <div class="row">
             <div class="col-sm-4">
-                <p><a href="proj1.html">Once A Rogue</a></p>
-                <img src="media/rogueHome.PNG" class="img-responsive" style="width: 100%" alt="Once A Rogue Image">
+                <img src="media/rogueHome.PNG" class="img-responsive" style="width: 100%" alt="Once A Rogue Image" data-toggle="modal" data-target="#exampleModalCenter">  
             </div>
             <div class="col-sm-4">
-                <p><a href="proj2.html">Asteroids Remake</a></p>
-                <img src="media/asteroidsHome.PNG" class="img-responsive" style="width: 100%" alt="Asteroids Image">
+                <img src="media/asteroidsHome.PNG" class="img-responsive" style="width: 100%" alt="Once A Rogue Image" data-toggle="modal" data-target="#exampleModalCenter">
             </div>
             <div class="col-sm-4">
-                <p><a href="proj3.html">Rock, Paper, Scissors</a></p>
-                <img src="media/rockHome.PNG" class="img-responsive" style="width: 100%" alt="Rock, Paper, Scissors Image">
+                <img src="media/rogueHome.PNG" class="img-responsive" style="width: 100%" alt="Once A Rogue Image" data-toggle="modal" data-target="#exampleModalCenter">
             </div>
         </div>
         <div class="row">
             <div class="col-sm-4">
-                <p><a href="proj1.html">Audio Visualizer</a></p>
-                <img src="media/rogueHome.PNG" class="img-responsive" style="width: 100%" alt="Once A Rogue Image">
+                <img src="media/rogueHome.PNG" class="img-responsive" style="width: 100%" alt="Once A Rogue Image" data-toggle="modal" data-target="#exampleModalCenter">
             </div>
             <div class="col-sm-4">
-                <p><a href="proj2.html">MTG Deck Builder</a></p>
-                <img src="media/asteroidsHome.PNG" class="img-responsive" style="width: 100%" alt="Asteroids Image">
+                <img src="media/rogueHome.PNG" class="img-responsive" style="width: 100%" alt="Once A Rogue Image" data-toggle="modal" data-target="#exampleModalCenter">
             </div>
             <div class="col-sm-4">
-                <p><a href="#" data-toggle="modal" data-target="#exampleModalCenter">Rock, Paper, Scissors</a></p>
-                <img src="media/rockHome.PNG" class="img-responsive" style="width: 100%" alt="Rock, Paper, Scissors Image">
+                <img src="media/rogueHome.PNG" class="img-responsive" style="width: 100%" alt="Once A Rogue Image" data-toggle="modal" data-target="#exampleModalCenter">
             </div>
         </div>
     </div>
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Once a Rogue</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
                 </div>
                 <div class="modal-body">
                     ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>

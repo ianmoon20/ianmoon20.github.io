@@ -100,11 +100,9 @@
             0% {
                 opacity: 0;
             }
-            
             40% {
                 opacity: 1;
             }
-            
             100% {
                 opacity: 0;
             }
@@ -183,7 +181,6 @@
                 -webkit-text-size-adjust: none;
             }
         }
-
     </style>
     <script>
         //TO DO:
@@ -242,6 +239,19 @@
             var controlsOpen = false;
             var achievementUnlocked = false;
 
+            function confirmUser() {
+                analyserNode = createWebAudioContextWithAnalyserNode(audioElement);
+
+                // start animation loop
+                update();
+                
+                // load and play default sound into audio element
+                playStream(audioElement, sounds[currSong], soundsName[currSong]);
+                
+                var overlay = document.getElementById("overlay");
+                overlay.style.display = "inline";
+            }
+            
             function init() {
                 winHeight = window.innerHeight;
                 winWidth = window.innerWidth;
@@ -249,21 +259,19 @@
                 // set up canvas stuff
                 canvas = document.querySelector('canvas');
                 ctx = canvas.getContext("2d");
-
+                
                 // get reference to <audio> element on page
                 audioElement = document.querySelector('audio');
                 audioElement.volume = volume;
-
+                
                 // get sound track <select> and Full Screen button working
-                setupUI();
-
-                // load and play default sound into audio element
-                playStream(audioElement, sounds[currSong], soundsName[currSong]);
-
                 resize();
-
-                // start animation loop
-                update();
+                
+                setupUI();
+                
+                ctx.font = "30px Arial";
+                ctx.fillStyle = "white";
+                ctx.fillText("Click the window to begin.", canvas.width/2 - 100, canvas.height/2); 
             }
 
 
@@ -274,7 +282,7 @@
                 // The || is because WebAudio has not been standardized across browsers yet
                 // http://webaudio.github.io/web-audio-api/#the-audiocontext-interface
                 audioCtx = new(window.AudioContext || window.webkitAudioContext);
-                
+
                 // create an analyser node
                 analyserNode = audioCtx.createAnalyser();
 
@@ -359,7 +367,7 @@
                     }
 
                     textbox.value = "";
-                    
+
                     if (!codes.includes("U.S.S Enterprise") && !codes.includes("You blockhead!") && !codes.includes("Adventure!") && !achievementUnlocked) {
                         displayAchievement("Do I Get a Zero?");
                         achievementUnlocked = true;
@@ -418,14 +426,6 @@
                 window.addEventListener('resize', function() {
                     resize();
                 }, false);
-                
-                // One-liner to resume playback when user interacted with the page.
-                document.querySelector('audio').addEventListener('click', function() {
-                  ctx.resume().then(() => {
-                    // call our helper function and get an analyser node
-                    analyserNode = createWebAudioContextWithAnalyserNode(audioElement);
-                  });
-                });
 
                 //Moving to the next song when this one is over
                 audioElement.addEventListener('ended', function() {
@@ -490,7 +490,7 @@
                 var achievement = document.createElement("p");
                 achievement.setAttribute("id", "achievement");
                 achievement.innerHTML = "Achievement Unlocked: " + msg;
-                
+
                 container.appendChild(achievement);
             }
 
@@ -606,7 +606,7 @@
             }
 
             function update() {
-                if(typeof analyserNode != 'undefined') {
+                if (typeof analyserNode != 'undefined') {
                     // this schedules a call to the update() method in 1/60 seconds
                     requestAnimationFrame(update);
 
@@ -909,8 +909,8 @@
             };
 
             window.addEventListener("load", init);
+            window.addEventListener("click", confirmUser);
         }());
-
     </script>
 </head>
 
@@ -1023,7 +1023,7 @@
         <audio controls id="audioControls"></audio>
         <span id="openButton" class="openBtn">&#9881;</span>
     </div>
-    
+
     <div id="achievement-container"></div>
 
     <div id="main">
