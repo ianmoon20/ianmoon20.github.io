@@ -197,6 +197,14 @@
                 'media/Panda Eyes - Colorblind.mp3',
                 'media/Coyote Kisses - Six Shooter.mp3'
             ];
+            
+            var addedSongs = [
+                
+            ];
+            
+            var addedSongNames = [
+            
+            ];
 
             var soundsName = [
                 'Koto',
@@ -221,6 +229,11 @@
             var red = 200,
                 green = 31,
                 blue = 237;
+            var redDir = true,
+                blueDir = true,
+                greenDir = true;
+            var interval = 0;
+            var maxInterval = 200;
             var waveform = false;
             var colorMode = "color";
 
@@ -233,9 +246,9 @@
                 lines = false,
                 gray = false;
             var maxRadius = 100;
-            var volume = .5;
+            var volume = .03;
             var currSong = 0;
-            var brightness = 0;
+            var brightness = 30;
             var controlsOpen = false;
             var achievementUnlocked = false;
 
@@ -244,14 +257,14 @@
 
                 // start animation loop
                 update();
-                
+
                 // load and play default sound into audio element
                 playStream(audioElement, sounds[currSong], soundsName[currSong]);
-                
+
                 var overlay = document.getElementById("overlay");
                 overlay.style.display = "inline";
             }
-            
+
             function init() {
                 winHeight = window.innerHeight;
                 winWidth = window.innerWidth;
@@ -259,19 +272,19 @@
                 // set up canvas stuff
                 canvas = document.querySelector('canvas');
                 ctx = canvas.getContext("2d");
-                
+
                 // get reference to <audio> element on page
                 audioElement = document.querySelector('audio');
                 audioElement.volume = volume;
-                
+
                 // get sound track <select> and Full Screen button working
                 resize();
-                
+
                 setupUI();
-                
+
                 ctx.font = "30px Arial";
                 ctx.fillStyle = "white";
-                ctx.fillText("Click the window to begin.", canvas.width/2 - 100, canvas.height/2); 
+                ctx.fillText("Click the window to begin.", canvas.width / 2 - canvas.width / 12, canvas.height / 2);
             }
 
 
@@ -357,6 +370,7 @@
 
                 document.querySelector("#colorModeSelect").onchange = function(e) {
                     colorMode = e.target.value;
+                    interval = 0;
                 };
 
                 document.querySelector("#submitButton").onclick = function(e) {
@@ -440,13 +454,12 @@
                 document.querySelector("#fileButton").onchange = function() {
                     //Getting the files from the filebutton
                     for (var i = 0; i < this.files.length; i++) {
-
                         //Reading the file
                         var fileReader = new FileReader;
                         fileReader.onload = function() {
                             var arrayBuffer = this.result;
                         }
-
+                        
                         fileReader.readAsArrayBuffer(this.files[i]);
 
                         //Getting file data
@@ -472,6 +485,9 @@
 
                         //Putting the source in the sounds array
                         sounds.push(url);
+                        addedSongs.push(url);
+                        
+                        //console.dir(addedSongs);
 
                         //Putting the song as the current song
                         currSong = soundsName.length - 1;
@@ -667,6 +683,47 @@
                             if (colorMode == "color") {
                                 ctx.fillStyle = makeColor(red, green, blue, 0.6);
                                 ctx.strokeStyle = makeColor(red, green, blue, 0.6);
+                            } else if (colorMode == "flow") {
+                                interval++;
+                                if (red >= 250) {
+                                    redDir = false;
+                                } else if (red <= 100) {
+                                    redDir = true;
+                                }
+                                if (blue >= 250) {
+                                    blueDir = false;
+                                } else if (blue <= 100) {
+                                    blueDir = true;
+                                }
+
+                                if (green >= 250) {
+                                    greenDir = false;
+                                } else if (green <= 100) {
+                                    greenDir = true;
+                                }
+
+                                if (interval == maxInterval) {
+                                    if (redDir) {
+                                        red++;
+                                    } else {
+                                        red--;
+                                    }
+
+                                    if (blueDir) {
+                                        blue++;
+                                    } else {
+                                        blue--;
+                                    }
+
+                                    if (greenDir) {
+                                        green++;
+                                    } else {
+                                        green--;
+                                    }
+
+                                    interval = 0;
+                                }
+
                             }
 
                             //Top 
@@ -909,7 +966,11 @@
             };
 
             window.addEventListener("load", init);
-            window.addEventListener("click", confirmUser);
+            window.addEventListener("click", function() {
+                if (analyserNode == undefined) {
+                    confirmUser();
+                }
+            }, false);
         }());
     </script>
 </head>
@@ -953,6 +1014,7 @@
                 <select id="colorModeSelect">
                         <option value="color">Color</option>
                         <option value="gradient">Gradient</option>
+                        <option value="flow">Flow</option>
                         <option value="none">None</option>
                     </select><br>
 
@@ -966,7 +1028,7 @@
                 <input type="range" class="color-slider" id="blueSlider" value="237" min="0" max="255" step="1"><br>
 
                 <label>Brightness</label><br>
-                <input type="range" id="brightnessSlider" value="0" min="0" max="255" step="1"><br>
+                <input type="range" id="brightnessSlider" value="30" min="0" max="255" step="1"><br>
 
                 <div id="filters">
                     <label>Invert:</label>
