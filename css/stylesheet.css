@@ -1,11 +1,11 @@
 :root {
-    --bg-color: #EADEDA;
+    --bg-color: white;
     --jumbo-color: #5B2333;
     --nav-color: #0D1F2D;
     --hover-color: #61707D;
     --heading-text-color: white;
     --text-color: black;
-    --link-color: #08415C;
+    --link-color: #1b64ac;
 }
 
 body {
@@ -89,7 +89,7 @@ a:hover {
 }
 
 .navbar-default .navbar-nav>.active>a {
-    background-color: var(--hover-color);
+    background-color: #617088;
     color: white;
 }
 
@@ -201,10 +201,48 @@ a:hover {
     .info-container {
         display: block;
     }
+    
+    .col-sm-3 {
+        padding-bottom: 1em;
+    }
 }
 
 @media only screen and (max-width: 766px) {
     .info-container {
         border-bottom: 3px solid black;
     }
+    .col-sm-3 {
+        padding-bottom: 1em;
+    }
+}
+
+.modal-header {
+    background-color: var(--jumbo-color);
+    color: var(--heading-text-color);
+}
+
+.modal-title {
+    color: var(--heading-text-color);
+}
+
+.close {
+    color: white;
+}
+
+.side-info {
+    margin-bottom: 1%;
+}
+
+.side {
+    border-bottom: solid;
+}
+
+img {
+    padding-bottom: 5%;
+}
+
+#desc {
+    padding-top: 5%;
+    font-family: 'Open Sans', sans-serif;
+    font-size: .75em;
 }
