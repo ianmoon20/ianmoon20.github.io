@@ -231,18 +231,24 @@ a:hover {
 
 .side-info {
     margin-bottom: 1%;
+    text-align: left;
+}
+
+.img-row {
+    padding-bottom: 1%;
 }
 
 .side {
     border-bottom: solid;
 }
 
-img {
-    padding-bottom: 5%;
+#desc {
+    padding-top: 4%;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+    text-align: justify;
 }
 
-#desc {
-    padding-top: 5%;
-    font-family: 'Open Sans', sans-serif;
-    font-size: .75em;
+p {
+    
 }
