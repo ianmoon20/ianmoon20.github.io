@@ -22,6 +22,10 @@ h3 {
     background-color: var(--jumbo-color);
 }
 
+embed {
+    width: 100%;
+    height: 40vh;
+}
 .jumbotron h1,
 .jumbotron p {
     font-family: 'Vollkorn', serif;
@@ -71,8 +75,13 @@ a {
     background-color: var(--hover-color);
 }
 
-a:hover {
-    color: black;
+a:visited {
+    color: #96C;
+}
+
+a:hover, a:focus {
+    color: #06C;
+    
 }
 
 .navbar-default .navbar-nav>li>a {
@@ -119,7 +128,6 @@ a:hover {
 .navbar-default .navbar-collapse,
 .navbar-default .navbar-form {
     border-top: 0px;
-    box-shadow: 0 0 0;
 }
 
 .navbar-fixed-top {
@@ -146,6 +154,7 @@ a:hover {
 .carousel-inner>.item>img {
     width: 100%;
     margin: 0 auto;
+    
 }
 
 .project-image {
@@ -157,7 +166,7 @@ a:hover {
 }
 
 .row {
-    padding-bottom: 3vw;
+    padding-bottom: 1vw;
 }
 
 .desc-header {
@@ -225,6 +234,7 @@ a:hover {
     color: var(--heading-text-color);
 }
 
+
 .close {
     color: white;
 }
@@ -239,16 +249,29 @@ a:hover {
 }
 
 .side {
-    border-bottom: solid;
+    border: solid;
+}
+
+#textBox {
+    margin-top: 3%;
+    margin-left: 5%;
+    border: solid;
+    border-width: 2px;
+    width: 90%;
+    max-height: 30vh;
+    overflow: auto;
 }
 
 #desc {
-    padding-top: 4%;
+    padding-top: 3%;
     font-family: 'Open Sans', sans-serif;
     font-size: 1em;
     text-align: justify;
 }
+.carouselInner {
+    border: solid;
+}
 
-p {
-    
+.tooltip-inner {
+    max-width: 350px;
 }
