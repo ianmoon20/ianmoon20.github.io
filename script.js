@@ -79,7 +79,7 @@ var projectInfo = {
         "size": "4",
         "time": "3 Months",
         "resources": ["Google Spreadsheet", "Google Docs", "Gamecrafter"],
-        "0": "media/Dume1.pdf",
+        "0": "media/Dume1.pdf#view=fitb",
         "desc": "Villains always seem to crop up in towns, cities, and neighborhoods... but how exactly do they settle in? I mean, they always seem to get a headquarters, but who is the person responsible for selling the property? Well, in short, you!<br><br>In this game the players are competing real estate agents tasked with the experience of supplying villains of all walks of life with homes and headquarters. In order to do this, you must take these differences into consideration. The property that appeals to the Foot Clan Member will probably not make Cthulhu, for instance, very pleased with you and I wouldn’t want to make him mad.<br><br>However, the clients are not your only problem. Throughout the course of the game, the other players will also be trying to clamor their way to the top of the sometimes metaphorical food chain. So watch your footing and be very careful to balance aggression and cooperation, for sometimes the enemy of your enemy is your friend. But remember, at the end of the day, only one player can be the very best.",
     },
     "rogue": {
