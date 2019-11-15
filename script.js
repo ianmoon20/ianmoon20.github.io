@@ -112,7 +112,9 @@ var makeModal = function (name) {
     while (resources.firstChild) {
         resources.removeChild(resources.firstChild);
     }
-
+    
+    //history.pushState(null, 'modalOpened');
+    
     desc.innerHTML = "";
 
     if (projectInfo[name]["total"] > 1) {

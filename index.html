@@ -53,28 +53,31 @@
         <h3>Projects</h3><br />
         <div class="row">
             <div class="col-sm-4 img-row">
-                <img id="rogue" onclick="makeModal('rogue')" src="media/RogueHome.png" class="img-responsive" alt="Once A Rogue Image" data-toggle="modal" data-target="#projectModalCenter">
+                <a href="javascript:;"><img id="rogue" onclick="makeModal('rogue')" src="media/RogueHome.png" class="img-responsive" alt="Once A Rogue Image" data-toggle="modal" data-target="#projectModalCenter"></a>
             </div>
             <div class="col-sm-4 img-row">
-                <img id="audio" onclick="makeModal('audio')" src="media/AudioHome.png" class="img-responsive" alt="Audio Visualizer Image" data-toggle="modal" data-target="#projectModalCenter">
+                <a href="javascript:;"><img id="audio" onclick="makeModal('audio')" src="media/AudioHome.png" class="img-responsive" alt="Audio Visualizer Image" data-toggle="modal" data-target="#projectModalCenter"></a>
             </div>
             <div class="col-sm-4 img-row">
-                <img id="asteroid" onclick="makeModal('deck')" src="media/DeckedHome.png" class="img-responsive" alt="Decked Builder Image" data-toggle="modal" data-target="#projectModalCenter">
+                <a href="javascript:;"><img id="asteroid" onclick="makeModal('deck')" src="media/DeckedHome.png" class="img-responsive" alt="Decked Builder Image" data-toggle="modal" data-target="#projectModalCenter"></a>
             </div>
             <div class="col-sm-4 img-row">
-                <img id="asteroid" onclick="makeModal('dume')" src="media/DumeHome.png" class="img-responsive" alt="Dume Realtors Image" data-toggle="modal" data-target="#projectModalCenter">
+                <a href="javascript:;"><img id="asteroid" onclick="makeModal('dume')" src="media/DumeHome.png" class="img-responsive" alt="Dume Realtors Image" data-toggle="modal" data-target="#projectModalCenter"></a>
             </div>
             <div class="col-sm-4 img-row">
-                <img id="platformer" onclick="makeModal('platform')" src="media/PlatformerHome.png" class="img-responsive" alt="Platformer Image" data-toggle="modal" data-target="#projectModalCenter">
+                <a href="javascript:;"><img id="platformer" onclick="makeModal('platform')" src="media/PlatformerHome.png" class="img-responsive" alt="Platformer Image" data-toggle="modal" data-target="#projectModalCenter"></a>
             </div>
             <div class="col-sm-4 img-row">
-                <img onclick="makeModal('aisles')" src="media/AislesHome.png" class="img-responsive" alt="Aisles of Chaos Image" data-toggle="modal" data-target="#projectModalCenter">
+                <a href="javascript:;"></a><img onclick="makeModal('aisles')" src="media/AislesHome.png" class="img-responsive" alt="Aisles of Chaos Image" data-toggle="modal" data-target="#projectModalCenter"></a>
             </div>
         </div>
         <div class="modal fade" id="projectModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                         <h2 class="modal-title" id="modalTitle">Once a Rogue</h2>
                     </div>
                     <div class="modal-body">
@@ -167,4 +170,5 @@
     </div>
 </body>
 <script src='script.js'></script>
+
 </html>

@@ -236,7 +236,12 @@ a:hover, a:focus {
 
 
 .close {
+    opacity: .6;
     color: white;
+    font-size: 30px;
+    font-weight: 100;
+    line-height: .5;
+    
 }
 
 .side-info {
@@ -250,6 +255,11 @@ a:hover, a:focus {
 
 .side {
     border: solid;
+    border-color: var(--jumbo-color);
+}
+img {
+    border: solid;
+    border-color: var(--jumbo-color);
 }
 
 #textBox {
@@ -257,6 +267,7 @@ a:hover, a:focus {
     margin-left: 5%;
     border: solid;
     border-width: 2px;
+    border-color: var(--jumbo-color);
     width: 90%;
     max-height: 30vh;
     overflow: auto;
@@ -270,6 +281,7 @@ a:hover, a:focus {
 }
 .carouselInner {
     border: solid;
+    border-color: var(--jumbo-color);
 }
 
 .tooltip-inner {
