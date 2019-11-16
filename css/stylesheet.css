@@ -10,9 +10,10 @@
 
 body {
     background-color: var(--bg-color);
+    padding-top: 50px;
 }
 
-h3 {
+#projects {
     font-family: 'Open Sans', sans-serif;
     font-size: 1.6em;
     color: var(--text-color);
@@ -211,15 +212,6 @@ a:hover, a:focus {
         display: block;
     }
     
-    .col-sm-3 {
-        padding-bottom: 1em;
-    }
-}
-
-@media only screen and (max-width: 766px) {
-    .info-container {
-        border-bottom: 3px solid black;
-    }
     .col-sm-3 {
         padding-bottom: 1em;
     }

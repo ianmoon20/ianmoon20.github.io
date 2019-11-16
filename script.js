@@ -10,6 +10,8 @@ var resources = document.getElementById("resources");
 var leftControl = document.getElementById("left");
 var rightControl = document.getElementById("right");
 
+var images = document.getElementsByClassName("img-responsive");
+
 var projectInfo = {
     "platform": {
         "total": 6,
@@ -101,6 +103,15 @@ $(function () {
     })
 })
 
+$(function () {
+    console.log($('.img-responsive').length);
+    
+    for(var i = 0; i < $('.img-responsive').length/2; i++) {
+        $(".img-responsive:eq(" + i  + ")").css({opacity: 0.0, visibility: "hidden"}).delay(500 * i).css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 1500);
+        $(".img-responsive:eq(" + ($('.img-responsive').length - (i + 1))  + ")").delay(500 * i).css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 2000);
+    }
+})
+
 var makeModal = function (name) {
     //Resetting modal carousel
     while (carouselList.firstChild) {
@@ -112,9 +123,9 @@ var makeModal = function (name) {
     while (resources.firstChild) {
         resources.removeChild(resources.firstChild);
     }
-    
+
     //history.pushState(null, 'modalOpened');
-    
+
     desc.innerHTML = "";
 
     if (projectInfo[name]["total"] > 1) {
