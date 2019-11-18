@@ -1,0 +1,122 @@
+:root {
+    --bg-color: #EEF0F2;
+    --jumbo-color: #5B2333;
+    --nav-color: #0D1F2D;
+    --hover-color: #61707D;
+    --heading-text-color: white;
+    --text-color: black;
+    --link-color: #1b64ac;
+}
+
+body {
+    background-color: var(--bg-color);
+    padding-top: 50px;
+}
+
+.navbar {
+    background-color: var(--nav-color);
+    font-family: 'Vollkorn', serif;
+    font-size: 1em;
+}
+
+a {
+    color: var(--link-color);
+    font-family: 'Open Sans', sans-serif;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: white;
+}
+
+.navbar-default .navbar-toggle {
+    border: 0px;
+}
+
+.navbar-default .navbar-toggle:focus {
+    background-color: var(--nav-color);
+}
+
+.navbar-default .navbar-toggle:hover {
+    background-color: var(--hover-color);
+}
+
+a:visited {
+    color: #96C;
+}
+
+a:hover, a:focus {
+    color: #06C;
+    
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: white;
+}
+
+.navbar-default .navbar-nav>li>a:visited {
+    color: white;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+    color: white;
+    background-color: var(--hover-color);
+}
+
+.navbar-default .navbar-nav>.active>a {
+    background-color: #617088;
+    color: white;
+}
+
+.navbar-default .navbar-nav>.active>a:hover {
+    background-color: var(--hover-color);
+    color: white;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu>li>a {
+    color: white;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu>li>a:hover {
+    color: white;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu>.active>a {
+    background-color: var(--hover-color);
+    color: white;
+}
+
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+    border-top: 0px;
+}
+
+.navbar-fixed-top {
+    border: 0px;
+}
+
+.navbar-default .navbar-nav>.open>a,
+.navbar-default .navbar-nav>.open>a:hover,
+.navbar-default .navbar-nav>.open>a:focus {
+    background-color: var(--hover-color);
+    color: white;
+}
+
+.navbar-default .navbar-nav>li>a:hover,
+.navbar-default .navbar-nav>li>a:focus {
+    color: white;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu>li>a:hover {
+    background-color: var(--hover-color);
+    color: white;
+}
+
+@media (min-width: 768px) {
+    .h-md-100 { height: 100vh; }
+}
+.bg-indigo { 
+    background: var(--jumbo-color); 
+}
+.img-responsive {
+    
+}

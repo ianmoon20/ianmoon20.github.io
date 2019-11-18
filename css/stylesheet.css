@@ -1,5 +1,5 @@
 :root {
-    --bg-color: white;
+    --bg-color: #EEF0F2;
     --jumbo-color: #5B2333;
     --nav-color: #0D1F2D;
     --hover-color: #61707D;
@@ -158,10 +158,6 @@ a:hover, a:focus {
     
 }
 
-.project-image {
-    width: 10%;
-}
-
 .info-container {
     font-size: 1.8em;
 }
@@ -278,4 +274,11 @@ img {
 
 .tooltip-inner {
     max-width: 350px;
+}
+
+.personal-image {
+    display: block;
+    margin: 0 auto;
+    max-width: 200px;
+    border-radius: 10%;
 }

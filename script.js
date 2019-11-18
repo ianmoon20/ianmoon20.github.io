@@ -10,8 +10,6 @@ var resources = document.getElementById("resources");
 var leftControl = document.getElementById("left");
 var rightControl = document.getElementById("right");
 
-var images = document.getElementsByClassName("img-responsive");
-
 var projectInfo = {
     "platform": {
         "total": 6,
@@ -27,7 +25,6 @@ var projectInfo = {
         "4": "media/Platformer5.png",
         "5": "media/Platformer6.png",
         "desc": "This is Speed Platformer.",
-
     },
     "aisles": {
         "total": 5,
@@ -106,8 +103,8 @@ $(function () {
 $(function () {
     console.log($('.img-responsive').length);
     
-    for(var i = 0; i < $('.img-responsive').length/2; i++) {
-        $(".img-responsive:eq(" + i  + ")").css({opacity: 0.0, visibility: "hidden"}).delay(500 * i).css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 1500);
+    for(var i = 0; i < $('.project-image').length/2; i++) {
+        $(".project-image:eq(" + i  + ")").css({opacity: 0.0, visibility: "hidden"}).delay(500 * i).css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 1500);
         $(".img-responsive:eq(" + ($('.img-responsive').length - (i + 1))  + ")").delay(500 * i).css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 2000);
     }
 })
