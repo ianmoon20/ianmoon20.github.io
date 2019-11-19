@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -31,8 +31,8 @@
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="index.html">Home</a></li>
                     <!--<li><a href="about-me.html">About Me</a></li>-->
-                    <li><a href="media/resume.pdf" target="_blank">Resume</a></li>
                     <li><a href="contact.html">Contact</a></li>
+                    <li><a href="media/resume.pdf" target="_blank">Resume</a></li>
                 </ul>
             </div>
         </div>
@@ -43,32 +43,67 @@
             <img src="media/profileImage.jpg" class="img-responsive personal-image" alt="Profile Image">
             <p>Rochester Institute of Technology</p>
             <p>Game Design and Development Graduate</p>
-            
         </div>
     </div>
     <div class="container-fluid bg-3 text-center">
-        <h3 id="projects">Projects</h3><br />
-        <div class="row">
-            <div class="col-sm-4 img-row">
-                <a href="javascript:;"><img id="rogue" onclick="makeModal('rogue')" src="media/RogueHome.png" class="img-responsive project-image" alt="Once A Rogue Image" data-toggle="modal" data-target="#projectModalCenter"></a>
+        <div id="contentCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#contentCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#contentCarousel" data-slide-to="1"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" id="carousel-content">
+                <div class="item active content">
+                    <h3 id="projects">Projects</h3><br />
+                    <div class="row">
+                        <div class="col-sm-4 img-row">
+                            <a href="javascript:;"><img id="rogue" onclick="makeModal('rogue')" src="media/RogueHome.png" class="img-responsive project-image" alt="Once A Rogue Image" data-toggle="modal" data-target="#projectModalCenter"></a>
+                        </div>
+                        <div class="col-sm-4 img-row">
+                            <a href="javascript:;"><img id="audio" onclick="makeModal('audio')" src="media/AudioHome.png" class="img-responsive project-image" alt="Audio Visualizer Image" data-toggle="modal" data-target="#projectModalCenter"></a>
+                        </div>
+                        <div class="col-sm-4 img-row">
+                            <a href="javascript:;"><img id="decked" onclick="makeModal('deck')" src="media/DeckedHome.png" class="img-responsive project-image" alt="Decked Builder Image" data-toggle="modal" data-target="#projectModalCenter"></a>
+                        </div>
+                        <div class="col-sm-4 img-row">
+                            <a href="javascript:;"><img id="asteroid" onclick="makeModal('dume')" src="media/DumeHome.png" class="img-responsive project-image" alt="Dume Realtors Image" data-toggle="modal" data-target="#projectModalCenter"></a>
+                        </div>
+                        <div class="col-sm-4 img-row">
+                            <a href="javascript:;"><img id="platformer" onclick="makeModal('platform')" src="media/PlatformerHome.png" class="img-responsive project-image" alt="Platformer Image" data-toggle="modal" data-target="#projectModalCenter"></a>
+                        </div>
+                        <div class="col-sm-4 img-row">
+                            <a href="javascript:;"><img onclick="makeModal('aisles')" src="media/AislesHome.png" class="img-responsive project-image" alt="Aisles of Chaos Image" data-toggle="modal" data-target="#projectModalCenter"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item content">
+                    <h3>About Me</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium congue sem sed ultricies. Ut et molestie lacus, vel rutrum elit. Morbi vitae laoreet est. Nam eu est vitae augue elementum sagittis. Nunc a nunc ut purus vehicula maximus. In tristique nisi ut dolor sodales, id suscipit ipsum sagittis. Nullam vestibulum mollis eleifend. Donec feugiat eleifend eros id tempus. Donec sagittis purus et lacus ultricies, eget dictum justo tincidunt. Donec finibus metus est, non pretium orci congue ac. Nullam nec est eu orci dictum dignissim. Nunc condimentum urna eget elit aliquam porttitor. Cras hendrerit ornare varius. Integer ultricies leo dui, non maximus ante molestie aliquet. Nullam vel lorem vitae sem accumsan pellentesque. Quisque sed libero vel ipsum tincidunt gravida.
+
+Aliquam nec gravida nulla, non accumsan turpis. Proin in fringilla dui, at fringilla quam. Donec tincidunt auctor lacus et pellentesque. Sed vehicula faucibus sapien, sed ornare magna aliquam vel. Aenean magna massa, cursus in felis eget, eleifend consequat massa. Sed mollis laoreet feugiat. Ut sollicitudin nisl purus, id tristique neque accumsan vel. Fusce ullamcorper tellus at elit blandit dapibus.
+
+Cras vitae odio enim. Morbi euismod ex vel urna eleifend feugiat. Nam sed iaculis diam. Praesent sit amet imperdiet nisi. Ut nibh odio, lacinia at aliquet at, accumsan nec velit. Nullam condimentum vestibulum risus in commodo. Fusce egestas orci neque, eu venenatis ex commodo ultricies.
+
+Quisque luctus purus volutpat, semper turpis non, lobortis mi. Curabitur laoreet nec neque at finibus. Praesent congue purus a turpis tincidunt maximus. Cras dapibus leo nec elit bibendum condimentum. Maecenas vitae magna eget mauris dignissim accumsan. Suspendisse vitae venenatis neque. Ut odio purus, pretium ut interdum sed, lobortis ut felis. Donec justo justo, sagittis sit amet justo in, molestie porta nibh. Fusce ullamcorper vestibulum orci in auctor. Aliquam tempor mauris ut iaculis rutrum. Nam cursus purus mi, sed blandit velit vehicula sed. Curabitur faucibus efficitur orci, quis imperdiet massa vestibulum et. Ut convallis pellentesque turpis, sed maximus orci porta id. Aliquam gravida scelerisque tortor, eu interdum libero euismod fermentum.
+
+Sed sit amet purus venenatis, tincidunt nunc in, finibus massa. Donec maximus consequat neque. Vestibulum sit amet turpis ac libero pulvinar venenatis. Integer maximus suscipit justo rhoncus semper. Proin in metus mattis nisl volutpat fermentum ut a velit. Aenean aliquet, ligula nec ultricies sollicitudin, lorem odio condimentum eros, non condimentum eros augue non neque. Cras rutrum nec metus id molestie. Mauris eu sapien ac quam rhoncus consectetur vel non dui. Mauris vulputate est quis urna placerat consequat. Mauris eu ex laoreet, imperdiet ex hendrerit, sodales erat. Maecenas nibh risus, auctor quis sem et, consectetur condimentum arcu. Donec dignissim nibh a augue dictum finibus. Integer pellentesque fringilla elementum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse bibendum posuere augue, nec semper lacus mattis a. Vivamus risus nisl, commodo eu fringilla vel, consequat eu sapien.
+
+</p>
+                </div>
             </div>
-            <div class="col-sm-4 img-row">
-                <a href="javascript:;"><img id="audio" onclick="makeModal('audio')" src="media/AudioHome.png" class="img-responsive project-image" alt="Audio Visualizer Image" data-toggle="modal" data-target="#projectModalCenter"></a>
-            </div>
-            <div class="col-sm-4 img-row">
-                <a href="javascript:;"><img id="asteroid" onclick="makeModal('deck')" src="media/DeckedHome.png" class="img-responsive project-image" alt="Decked Builder Image" data-toggle="modal" data-target="#projectModalCenter"></a>
-            </div>
-            <div class="col-sm-4 img-row">
-                <a href="javascript:;"><img id="asteroid" onclick="makeModal('dume')" src="media/DumeHome.png" class="img-responsive project-image" alt="Dume Realtors Image" data-toggle="modal" data-target="#projectModalCenter"></a>
-            </div>
-            <div class="col-sm-4 img-row">
-                <a href="javascript:;"><img id="platformer" onclick="makeModal('platform')" src="media/PlatformerHome.png" class="img-responsive project-image" alt="Platformer Image" data-toggle="modal" data-target="#projectModalCenter"></a>
-            </div>
-            <div class="col-sm-4 img-row">
-                <a href="javascript:;"></a><img onclick="makeModal('aisles')" src="media/AislesHome.png" class="img-responsive project-image" alt="Aisles of Chaos Image" data-toggle="modal" data-target="#projectModalCenter"></a>
-            </div>
+            <!-- Left and right controls -->
+            <a class="left carousel-control" href="#contentCarousel" id="content-left" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#contentCarousel" id="content-right" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="sr-only">Next</span>
+            </a>
         </div>
-        <div class="modal fade" id="projectModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="projectModalCenter" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
