@@ -52,7 +52,7 @@ var projectInfo = {
         "2": "media/Audio3.png",
         "3": "media/Audio4.png",
         "4": "media/Audio5.png",
-        "desc": "An audio visualizer featuring various customization options such as grayscale, RGB changing, song uploading, etc.",
+        "desc": "An audio visualizer featuring various customization options such as grayscale, RGB changing, song uploading, etc. Reads in data from the Audio API, parses the data, then adjusts the image displayed on the screen based on the data.",
     },
     "deck": {
         "total": 8,
