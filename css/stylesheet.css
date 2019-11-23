@@ -182,35 +182,7 @@ a:focus {
     color: var(--jumbo-color);
 }
 
-@media only screen and (max-width: 1700px) {
-    .info-container {
-        font-size: 1.6em;
-        margin: 0 auto;
-    }
-}
 
-@media only screen and (max-width: 1285px) {
-    .info-container {
-        font-size: 1.1em;
-        margin: 0 auto;
-    }
-    .desc-header {
-        font-size: 1.1em;
-    }
-    .desc-info,
-    .contrib-list {
-        font-size: 1em;
-    }
-}
-
-@media only screen and (max-width: 924px) {
-    .info-container {
-        display: block;
-    }
-    .col-sm-3 {
-        padding-bottom: 1em;
-    }
-}
 
 .modal-header {
     background-color: var(--jumbo-color);
@@ -280,6 +252,7 @@ img {
     margin: 0 auto;
     max-height: 200px;
     border-radius: 10%;
+    border-color: black;
 }
 
 #myCarousel,
@@ -353,6 +326,44 @@ img {
     bottom: -3vh;
 }
 
-.content {
-    min-height: 900px;
+#aboutContainer {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+    text-align: justify;
+    border: solid;
+    border-width: 2px;
+    border-color: var(--jumbo-color);
+    width: 90%;
+    max-height: 30vh;
+    overflow: auto;
+}
+
+@media only screen and (max-width: 1700px) {
+    .info-container {
+        font-size: 1.6em;
+        margin: 0 auto;
+    }
+}
+
+@media only screen and (max-width: 1285px) {
+    .info-container {
+        font-size: 1.1em;
+        margin: 0 auto;
+    }
+    .desc-header {
+        font-size: 1.1em;
+    }
+    .desc-info,
+    .contrib-list {
+        font-size: 1em;
+    }
+}
+
+@media only screen and (max-width: 924px) {
+    .info-container {
+        display: block;
+    }
+    .col-sm-3 {
+        padding-bottom: 1em;
+    }
 }

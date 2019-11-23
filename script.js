@@ -24,7 +24,7 @@ var projectInfo = {
         "3": "media/Platformer4.png",
         "4": "media/Platformer5.png",
         "5": "media/Platformer6.png",
-        "desc": "This is Speed Platformer.",
+        "desc": "Speed Platformer is a game using the Phaser.js engine. The goal of the game is to complete each of the stages as quickly as possible. To complete each stage, the players will have to navigate the level without touching any of the red obstacles. The game's data is stored in the browser's memory to remember the user's fastest times when returning to the site and compares them to their current run's times.",
     },
     "aisles": {
         "total": 5,
@@ -38,7 +38,7 @@ var projectInfo = {
         "2": "media/Aisles3.png",
         "3": "media/Aisles4.png",
         "4": "media/Aisles5.png",
-        "desc": "This is Aisles of Chaos.",
+        "desc": "Aisles of Chaos is a 2-player party game designed during a Game Jam. Utilizing the Construct 2 Engine, the goal of the game is to bring various food items to a register for points. The player with the highest points at the end of the time limit wins. However, the food you are holding can also be used as a weapon to cause your opponent to drop all of their food.",
     },
     "audio": {
         "total": 5,
@@ -52,7 +52,7 @@ var projectInfo = {
         "2": "media/Audio3.png",
         "3": "media/Audio4.png",
         "4": "media/Audio5.png",
-        "desc": "This is an Audio Visualizer.",
+        "desc": "An audio visualizer featuring various customization options such as grayscale, RGB changing, song uploading, etc.",
     },
     "deck": {
         "total": 8,
@@ -60,7 +60,7 @@ var projectInfo = {
         "link": "https://proj2-mvc-430.herokuapp.com/",
         "size": "1",
         "time": "1 Month",
-        "resources": ["HTML", "Javascript", "CSS", "Bootstrap"],
+        "resources": ["HTML", "Javascript", "CSS", "Bootstrap", "MongoDB"],
         "0": "media/Decked1.png",
         "1": "media/Decked2.png",
         "2": "media/Decked3.png",
@@ -69,7 +69,7 @@ var projectInfo = {
         "5": "media/Decked6.png",
         "6": "media/Decked7.png",
         "7": "media/Decked8.png",
-        "desc": "This is Decked Builder",
+        "desc": "Decked Builder is a simple Magic: The Gathering deck building site. The site uses MongoDB and Javascript to allow users to create profiles and save their decklists. User passwords are hashed and salted for protection.",
     },
     "dume": {
         "total": 0,
@@ -79,7 +79,7 @@ var projectInfo = {
         "time": "3 Months",
         "resources": ["Google Spreadsheet", "Google Docs", "Gamecrafter"],
         "0": "media/Dume1.pdf#view=fitb",
-        "desc": "Villains always seem to crop up in towns, cities, and neighborhoods... but how exactly do they settle in? I mean, they always seem to get a headquarters, but who is the person responsible for selling the property? Well, in short, you!<br><br>In this game the players are competing real estate agents tasked with the experience of supplying villains of all walks of life with homes and headquarters. In order to do this, you must take these differences into consideration. The property that appeals to the Foot Clan Member will probably not make Cthulhu, for instance, very pleased with you and I wouldn’t want to make him mad.<br><br>However, the clients are not your only problem. Throughout the course of the game, the other players will also be trying to clamor their way to the top of the sometimes metaphorical food chain. So watch your footing and be very careful to balance aggression and cooperation, for sometimes the enemy of your enemy is your friend. But remember, at the end of the day, only one player can be the very best.",
+        "desc": "D&Uuml;ME Realtors is a party card game designed to be played with between two to four players. The game features largely competitive elements with opportunities of cooperation, in which players attempt to become the best super villain real estate agent. Players take turns selecting a villain to attempt to sell their available homes to and the other players will try to steal said client. The player with the most points, as gained by the clients they've sold homes to, wins.",
     },
     "rogue": {
         "total": 1,
@@ -89,7 +89,7 @@ var projectInfo = {
         "time": "3 Months",
         "resources": ["Monogame", "C#"],
         "0": "media/Rogue1.png",
-        "desc": "This is once a rogue.",
+        "desc": "Once a Rogue is a procedurally generated RPG, in the style of Binding of Isaac. Players traverse a randomly generated dungeon by navigating rooms. Each room has a template that determines the layout and movement patterns of the monsters within. Combat is done in real-time and players can combo abilities similarly to games such as Divinity: Original Sin. Defeating monsters gives the player experience which can level them up. Once levelled up, they can purchase skills in a variety of skill trees. Each floor in a dungeon has a boss room where a harder enemy can be fought to move onto the next floor.",
     }
 }
 
@@ -103,8 +103,8 @@ $(function () {
 $(function () {
     console.log($('.img-responsive').length);
     
-    for(var i = 0; i < $('.project-image').length/2; i++) {
-        $(".project-image:eq(" + i  + ")").css({opacity: 0.0, visibility: "hidden"}).delay(500 * i).css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 1500);
+    for(var i = 0; i < $('.img-responsive').length/2; i++) {
+        $(".img-responsive:eq(" + i  + ")").css({opacity: 0.0, visibility: "hidden"}).delay(500 * i).css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 1500);
         $(".img-responsive:eq(" + ($('.img-responsive').length - (i + 1))  + ")").delay(500 * i).css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 2000);
     }
 })
