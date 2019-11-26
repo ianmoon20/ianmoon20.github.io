@@ -78,7 +78,7 @@ var projectInfo = {
         "time": "3 Months",
         "resources": ["Google Spreadsheet", "Google Docs", "Gamecrafter"],
         "0": "media/Dume1.pdf#view=fitb",
-        "desc": "D&Uuml;ME Realtors is a party card game designed to be played with between two to four players. The game features largely competitive elements with opportunities of cooperation, in which players attempt to become the best super villain real estate agent. Players take turns selecting a villain to attempt to sell their available homes to and the other players will try to steal said client. The player with the most points, as gained by the clients they've sold homes to, wins.",
+        "desc": "D&Uuml;ME Realtors is a party card game designed to be played with between two to four players. The game features largely competitive elements with opportunities of cooperation in which players attempt to become the best super villain real estate agent. Players take turns selecting a villain to attempt to sell their available homes to and the other players will try to steal said client. The player with the most points, as gained by the clients they've sold homes to, wins.",
     },
     "rogue": {
         "total": 7,
