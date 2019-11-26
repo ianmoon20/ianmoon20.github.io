@@ -5,7 +5,6 @@ var desc = document.getElementById("desc");
 var modalTitle = document.getElementById("modalTitle");
 var projectLink = document.getElementById("projectLink");
 var teamSize = document.getElementById("teamSize");
-var timeSpent = document.getElementById("timeSpent");
 var resources = document.getElementById("resources");
 var leftControl = document.getElementById("left");
 var rightControl = document.getElementById("right");
@@ -82,14 +81,20 @@ var projectInfo = {
         "desc": "D&Uuml;ME Realtors is a party card game designed to be played with between two to four players. The game features largely competitive elements with opportunities of cooperation, in which players attempt to become the best super villain real estate agent. Players take turns selecting a villain to attempt to sell their available homes to and the other players will try to steal said client. The player with the most points, as gained by the clients they've sold homes to, wins.",
     },
     "rogue": {
-        "total": 1,
+        "total": 7,
         "name": "Once a Rogue",
         "link": "https://github.com/DarkSword-Studios/Once-A-Rogue",
         "size": "4",
         "time": "3 Months",
         "resources": ["Monogame", "C#"],
-        "0": "media/Rogue1.png",
-        "desc": "Once a Rogue is a procedurally generated RPG, in the style of Binding of Isaac. Players traverse a randomly generated dungeon by navigating rooms. Each room has a template that determines the layout and movement patterns of the monsters within. Combat is done in real-time and players can combo abilities similarly to games such as Divinity: Original Sin. Defeating monsters gives the player experience which can level them up. Once levelled up, they can purchase skills in a variety of skill trees. Each floor in a dungeon has a boss room where a harder enemy can be fought to move onto the next floor.",
+        "0": "media/RogueHome.png",
+        "1": "media/Rogue1.png",
+        "2": "media/Rogue2.png",
+        "3": "media/Rogue3.png",
+        "4": "media/Rogue4.png",
+        "5": "media/Rogue5.png",
+        "6": "media/Rogue6.png",
+        "desc": "Once a Rogue is a procedurally generated roleplaying game, in the style of Binding of Isaac. Players traverse a randomly generated dungeon by navigating rooms. Each room has a template that determines the layout and movement patterns of the monsters within. Combat is done in real-time and players can combo abilities similarly to games such as Divinity: Original Sin. Defeating monsters gives the player experience which can level them up. Once levelled up, they can purchase skills in a variety of skill trees. Each floor in a dungeon has a boss room where a harder enemy can be fought to move onto the next floor.",
     }
 }
 
@@ -101,11 +106,22 @@ $(function () {
 })
 
 $(function () {
-    console.log($('.img-responsive').length);
-    
-    for(var i = 0; i < $('.img-responsive').length/2; i++) {
-        $(".img-responsive:eq(" + i  + ")").css({opacity: 0.0, visibility: "hidden"}).delay(500 * i).css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 1500);
-        $(".img-responsive:eq(" + ($('.img-responsive').length - (i + 1))  + ")").delay(500 * i).css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 2000);
+    for (var i = 0; i < $('.img-responsive').length / 2; i++) {
+        $(".img-responsive:eq(" + i + ")").css({
+            opacity: 0.0,
+            visibility: "hidden"
+        }).delay(500 * i).css({
+            opacity: 0.0,
+            visibility: "visible"
+        }).animate({
+            opacity: 1.0
+        }, 1500);
+        $(".img-responsive:eq(" + ($('.img-responsive').length - (i + 1)) + ")").delay(500 * i).css({
+            opacity: 0.0,
+            visibility: "visible"
+        }).animate({
+            opacity: 1.0
+        }, 2000);
     }
 })
 
@@ -141,7 +157,12 @@ var makeModal = function (name) {
         carouselImages.appendChild(embed);
 
         carousel.classList.remove("slide");
+        
+        carousel.style.marginRight = "0px";
+        carousel.style.marginLeft = "0px";
     } else {
+        carousel.style.marginRight = "";
+        carousel.style.marginLeft = "";
         carousel.classList.add("slide");
         //Updating information based on what was clicked.
         for (var i = 0; i < projectInfo[name]["total"]; i++) {
@@ -182,6 +203,5 @@ var makeModal = function (name) {
     $('[data-toggle="tooltip"]').attr('title', projectInfo[name]["link"])
         .tooltip('fixTitle');
     teamSize.innerHTML = projectInfo[name]["size"];
-    timeSpent.innerHTML = projectInfo[name]["time"];
     desc.innerHTML = projectInfo[name]["desc"];
 }
