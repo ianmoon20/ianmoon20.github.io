@@ -334,6 +334,7 @@ img {
     border-width: 2px;
     border-color: var(--jumbo-color);
     width: 90%;
+    max-height: 50vh;
     overflow: auto;
 }
 
