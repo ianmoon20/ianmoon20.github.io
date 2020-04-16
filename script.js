@@ -56,7 +56,7 @@ var projectInfo = {
     "deck": {
         "total": 8,
         "name": "Decked Builder",
-        "link": "https://proj2-mvc-430.herokuapp.com/",
+        "link": "https://mtgdeckbox.herokuapp.com/",
         "size": "1",
         "time": "1 Month",
         "resources": ["HTML", "Javascript", "CSS", "Bootstrap", "MongoDB"],
